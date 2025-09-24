@@ -1,4 +1,6 @@
-import React from "react";
+// src/components/AddTaskPanel/AddTaskPanel.tsx
+import React, { useState } from "react";
+import { open } from "@tauri-apps/plugin-dialog";
 import styles from "./AddTaskPanel.module.css";
 
 interface AddTaskPanelProps {
@@ -16,6 +18,36 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   onDestinationChange,
   onAddTask,
 }) => {
+  const handleSelectSource = async () => {
+    try {
+      const selected = await open({
+        directory: true,
+        multiple: false,
+        title: "Выберите исходную папку",
+      });
+      if (selected) {
+        onSourceChange(selected as string);
+      }
+    } catch (error) {
+      console.error("Ошибка выбора исходной папки:", error);
+    }
+  };
+
+  const handleSelectDestination = async () => {
+    try {
+      const selected = await open({
+        directory: true,
+        multiple: false,
+        title: "Выберите целевую папку",
+      });
+      if (selected) {
+        onDestinationChange(selected as string);
+      }
+    } catch (error) {
+      console.error("Ошибка выбора целевой папки:", error);
+    }
+  };
+
   return (
     <div className={styles.addTaskSection}>
       <h2>Добавить задачу бэкапа</h2>
@@ -27,8 +59,11 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           onChange={(e) => onSourceChange(e.target.value)}
           placeholder="Выберите исходную папку..."
           className={styles.input}
+          readOnly
         />
-        <button className={styles.button}>Выбрать</button>
+        <button onClick={handleSelectSource} className={styles.button}>
+          Выбрать
+        </button>
       </div>
       <div className={styles.inputGroup}>
         <label>Целевая папка:</label>
@@ -38,10 +73,17 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           onChange={(e) => onDestinationChange(e.target.value)}
           placeholder="Выберите целевую папку..."
           className={styles.input}
+          readOnly
         />
-        <button className={styles.button}>Выбрать</button>
+        <button onClick={handleSelectDestination} className={styles.button}>
+          Выбрать
+        </button>
       </div>
-      <button onClick={onAddTask} className={styles.addButton}>
+      <button
+        onClick={onAddTask}
+        className={styles.addButton}
+        disabled={!source || !destination}
+      >
         Добавить задачу
       </button>
     </div>
