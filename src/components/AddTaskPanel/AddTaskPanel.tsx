@@ -1,19 +1,23 @@
 // src/components/AddTaskPanel/AddTaskPanel.tsx
-import React, { useState } from "react";
+import React from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 import styles from "./AddTaskPanel.module.css";
 
 interface AddTaskPanelProps {
+  name: string;
   source: string;
   destination: string;
+  onNameChange: (value: string) => void;
   onSourceChange: (value: string) => void;
   onDestinationChange: (value: string) => void;
   onAddTask: () => void;
 }
 
 const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
+  name,
   source,
   destination,
+  onNameChange,
   onSourceChange,
   onDestinationChange,
   onAddTask,
@@ -52,6 +56,16 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
     <div className={styles.addTaskSection}>
       <h2>Добавить задачу бэкапа</h2>
       <div className={styles.inputGroup}>
+        <label>Название задачи:</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => onNameChange(e.target.value)}
+          placeholder="Введите название задачи"
+          className={styles.input}
+        />
+      </div>
+      <div className={styles.inputGroup}>
         <label>Исходная папка:</label>
         <input
           type="text"
@@ -82,7 +96,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
       <button
         onClick={onAddTask}
         className={styles.addButton}
-        disabled={!source || !destination}
+        disabled={!name || !source || !destination}
       >
         Добавить задачу
       </button>

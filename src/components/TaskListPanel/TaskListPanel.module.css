@@ -1,3 +1,4 @@
+/* src/components/TaskListPanel/TaskListPanel.module.css */
 .tasksSection {
   width: 100%;
   max-width: 600px;
@@ -14,7 +15,7 @@
 
 .taskItem {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
@@ -24,5 +25,5 @@
 }
 
 .taskItem span {
-  margin-right: 20px;
+  margin-bottom: 5px;
 }
