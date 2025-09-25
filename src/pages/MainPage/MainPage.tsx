@@ -1,4 +1,3 @@
-// src/pages/MainPage/MainPage.tsx
 import React, { useState } from "react";
 import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
 import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
@@ -25,6 +24,14 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const handleDeleteTask = (index: number) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteAllTasks = () => {
+    setTasks([]);
+  };
+
   return (
     <div className={styles.container}>
       <h1>Бэкап файлов</h1>
@@ -37,7 +44,11 @@ const MainPage: React.FC = () => {
         onDestinationChange={setDestination}
         onAddTask={handleAddTask}
       />
-      <TaskListPanel tasks={tasks} />
+      <TaskListPanel
+        tasks={tasks}
+        onDeleteTask={handleDeleteTask}
+        onDeleteAllTasks={handleDeleteAllTasks}
+      />
       <button className={styles.startButton}>Запустить бэкапы</button>
     </div>
   );
