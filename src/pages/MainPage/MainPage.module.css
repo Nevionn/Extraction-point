@@ -3,17 +3,98 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #434141;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-.progressSection {
+.progresItem {
+  min-height: 237px;
   width: 100%;
   max-width: 600px;
-  margin-top: 20px;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #000000;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1500px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* Стили для заголовка прогресса */
+h2 {
+  color: #242323;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Адаптивность для свёрнутого окна (<1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 100%;
+  }
+
+  .column {
+    gap: 15px;
+    min-width: 300px;
+    align-items: center;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Для очень узких окон (<600px) */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .columns {
+    gap: 15px;
+  }
+
+  .column {
+    gap: 10px;
+    min-width: 250px;
+  }
+
+  h2 {
+    font-size: 1.125rem;
+  }
 }

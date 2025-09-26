@@ -47,37 +47,47 @@ const MainPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Бэкап файлов</h1>
-      <AddTaskPanel
-        name={name}
-        source={source}
-        destination={destination}
-        onNameChange={setName}
-        onSourceChange={setSource}
-        onDestinationChange={setDestination}
-        onAddTask={handleAddTask}
-      />
-      <TaskListPanel
-        tasks={tasks}
-        onDeleteTask={handleDeleteTaskWithProgress}
-        onDeleteAllTasks={handleDeleteAllTasks}
-        onStartBackups={handleStartBackups}
-        onStartSingleBackup={handleStartSingleBackup}
-        isBackingUp={isBackingUp}
-      />
-      {progress.size > 0 && (
-        <div className={styles.progressSection}>
-          <h2>Прогресс бэкапов</h2>
-          {Array.from(progress.values()).map((prog) => (
-            <ProgressBar
-              key={prog.taskName}
-              taskName={prog.taskName}
-              progress={prog.progress}
-            />
-          ))}
+      <h1 className={styles.title}>Бэкап файлов</h1>
+
+      <div className={styles.columns}>
+        {/* Левая колонка */}
+        <div className={styles.column}>
+          <AddTaskPanel
+            name={name}
+            source={source}
+            destination={destination}
+            onNameChange={setName}
+            onSourceChange={setSource}
+            onDestinationChange={setDestination}
+            onAddTask={handleAddTask}
+          />
+          <TaskListPanel
+            tasks={tasks}
+            onDeleteTask={handleDeleteTaskWithProgress}
+            onDeleteAllTasks={handleDeleteAllTasks}
+            onStartBackups={handleStartBackups}
+            onStartSingleBackup={handleStartSingleBackup}
+            isBackingUp={isBackingUp}
+          />
         </div>
-      )}
-      <StatusSection status={status} />
+
+        {/* Правая колонка */}
+        <div className={styles.column}>
+          {progress.size > 0 && (
+            <div className={styles.progresItem}>
+              <h2>Прогресс бэкапов</h2>
+              {Array.from(progress.values()).map((prog) => (
+                <ProgressBar
+                  key={prog.taskName}
+                  taskName={prog.taskName}
+                  progress={prog.progress}
+                />
+              ))}
+            </div>
+          )}
+          <StatusSection status={status} />
+        </div>
+      </div>
     </div>
   );
 };
