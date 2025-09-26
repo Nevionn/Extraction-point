@@ -6,6 +6,12 @@ interface ProgressBarProps {
   progress: number; // Прогресс в процентах (0-100)
 }
 
+/**
+ * Компонент для отображения состояния процесса копирования файлов
+ *
+ * @returns {JSX.component}
+ */
+
 const ProgressBar: React.FC<ProgressBarProps> = ({ taskName, progress }) => {
   return (
     <div className={styles.progressContainer}>

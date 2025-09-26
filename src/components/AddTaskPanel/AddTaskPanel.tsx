@@ -1,4 +1,3 @@
-// src/components/AddTaskPanel/AddTaskPanel.tsx
 import React from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 import styles from "./AddTaskPanel.module.css";
@@ -12,6 +11,13 @@ interface AddTaskPanelProps {
   onDestinationChange: (value: string) => void;
   onAddTask: () => void;
 }
+
+/**
+ * Компонент для создание задачи.
+ * Принимает: название задачи, входную и выходную директорию
+ *
+ * @returns {JSX.component}
+ */
 
 const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   name,

@@ -13,6 +13,13 @@ interface TaskListPanelProps {
   onDeleteAllTasks: () => void;
 }
 
+/**
+ * Компонент для управления существующими задачами.
+ * Можно удалить как отдельно взятую задачу, так и все разом
+ *
+ * @returns {JSX.component}
+ */
+
 const TaskListPanel: React.FC<TaskListPanelProps> = ({
   tasks,
   onDeleteTask,
