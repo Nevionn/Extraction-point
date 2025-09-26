@@ -24,7 +24,6 @@ const MainPage: React.FC = () => {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [name, setName] = useState("");
-
   const [progress, setProgress] = useState<Map<string, Progress>>(new Map());
   const [status, setStatus] = useState<string[]>([]);
   const [isBackingUp, setIsBackingUp] = useState(false);
@@ -113,14 +112,9 @@ const MainPage: React.FC = () => {
         tasks={tasks}
         onDeleteTask={handleDeleteTask}
         onDeleteAllTasks={handleDeleteAllTasks}
+        onStartBackups={handleStartBackups}
+        isBackingUp={isBackingUp}
       />
-      <button
-        onClick={handleStartBackups}
-        className={styles.startButton}
-        disabled={tasks.length === 0 || isBackingUp}
-      >
-        {isBackingUp ? "Выполняется..." : "Запустить бэкапы"}
-      </button>
       {progress.size > 0 && (
         <div className={styles.progressSection}>
           <h2>Прогресс бэкапов</h2>
