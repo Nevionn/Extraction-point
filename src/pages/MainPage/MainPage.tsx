@@ -20,11 +20,18 @@ interface Progress {
   progress: number;
 }
 
+/**
+ * Компонент главной страницы, на которой располагаются основные компоненты-виджеты для управления созданием, выполнением и отображением результатов задач бекапа.
+ *
+ * @returns {JSX.component}
+ */
+
 const MainPage: React.FC = () => {
   const [tasks, setTasks] = useState<BackupTask[]>([]);
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [name, setName] = useState("");
+
   const [progress, setProgress] = useState<Map<string, Progress>>(new Map());
   const [status, setStatus] = useState<string[]>([]);
   const [isBackingUp, setIsBackingUp] = useState(false);
