@@ -20,7 +20,7 @@
 }
 
 .title {
-  color: #000000;
+  color: #ffffff;
   text-align: center;
   margin-bottom: 30px;
   font-size: 2rem;
@@ -29,7 +29,8 @@
 .columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  max-width: 1500px;
+  gap: 10px;
+  max-width: 1350px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -39,17 +40,17 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  min-width: 600px; /* Гарантируем место для панелей с max-width: 600px */
 }
 
-/* Стили для заголовка прогресса */
 h2 {
   color: #242323;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
-/* Адаптивность для свёрнутого окна (<1024px) */
-@media (max-width: 1024px) {
+/* Адаптивность для свёрнутого окна (<1280px) */
+@media (max-width: 1330px) {
   .container {
     padding: 15px;
   }
@@ -59,7 +60,7 @@ h2 {
   }
 
   .columns {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Переход на одну колонку */
     gap: 20px;
     max-width: 100%;
   }
@@ -96,5 +97,10 @@ h2 {
 
   h2 {
     font-size: 1.125rem;
+  }
+
+  .progresItem {
+    padding: 10px;
+    min-height: 200px;
   }
 }

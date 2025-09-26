@@ -73,18 +73,16 @@ const MainPage: React.FC = () => {
 
         {/* Правая колонка */}
         <div className={styles.column}>
-          {progress.size > 0 && (
-            <div className={styles.progresItem}>
-              <h2>Прогресс бэкапов</h2>
-              {Array.from(progress.values()).map((prog) => (
-                <ProgressBar
-                  key={prog.taskName}
-                  taskName={prog.taskName}
-                  progress={prog.progress}
-                />
-              ))}
-            </div>
-          )}
+          <div className={styles.progresItem}>
+            <h2>Прогресс бэкапов</h2>
+            {Array.from(progress.values()).map((prog) => (
+              <ProgressBar
+                key={prog.taskName}
+                taskName={prog.taskName}
+                progress={prog.progress}
+              />
+            ))}
+          </div>
           <StatusSection status={status} />
         </div>
       </div>
