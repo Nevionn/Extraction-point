@@ -25,7 +25,6 @@ interface Progress {
  *
  * @returns {JSX.Element}
  */
-
 const MainPage: React.FC = () => {
   const [tasks, setTasks] = useState<BackupTask[]>([]);
   const [source, setSource] = useState("");
@@ -35,6 +34,29 @@ const MainPage: React.FC = () => {
   const [progress, setProgress] = useState<Map<string, Progress>>(new Map());
   const [status, setStatus] = useState<string[]>([]);
   const [isBackingUp, setIsBackingUp] = useState(false);
+
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
+        setTasks(loadedTasks);
+      } catch (error) {
+        console.log("Не удалось загрузить задачи:", error);
+        setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
+      }
+    };
+
+    loadTasks();
+  }, []);
+
+  const saveTasks = async (newTasks: BackupTask[]) => {
+    try {
+      await invoke("save_tasks", { tasks: newTasks });
+    } catch (error) {
+      console.error("Ошибка при сохранении задач:", error);
+      setStatus((prev) => [...prev, `Ошибка сохранения задач: ${error}`]);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = listen("backup_progress", (event) => {
@@ -57,28 +79,35 @@ const MainPage: React.FC = () => {
 
   const handleAddTask = () => {
     if (name && source && destination) {
-      setTasks([...tasks, { name, source, destination }]);
+      const newTasks = [...tasks, { name, source, destination }];
+      setTasks(newTasks);
       setName("");
       setSource("");
       setDestination("");
+      saveTasks(newTasks);
+    } else {
+      setStatus((prev) => [...prev, "Ошибка: Заполните все поля задачи"]);
     }
   };
 
   const handleDeleteTask = (index: number) => {
     const taskName = tasks[index].name;
-    setTasks(tasks.filter((_, i) => i !== index));
+    const newTasks = tasks.filter((_, i) => i !== index);
+    setTasks(newTasks);
     setStatus(status.filter((_, i) => i !== index));
     setProgress((prev) => {
       const newProgress = new Map(prev);
       newProgress.delete(taskName);
       return newProgress;
     });
+    saveTasks(newTasks);
   };
 
   const handleDeleteAllTasks = () => {
     setTasks([]);
     setStatus([]);
     setProgress(new Map());
+    saveTasks([]);
   };
 
   const handleStartBackups = async () => {
