@@ -1,15 +1,7 @@
 use std::fs;
-use std::path::{Path, PathBuf};
-use tauri::{Emitter, Manager};
-use rusqlite::{params, Connection};
-use serde::{Deserialize, Serialize};
+use std::path::Path;
+use tauri::{Emitter};
 
-#[derive(Serialize, Deserialize)]
-pub struct BackupTask {
-    pub name: String,
-    pub source: String,
-    pub destination: String,
-}
 
 #[tauri::command]
 pub fn backup_directory(source: String, destination: String, task_name: String, app_handle: tauri::AppHandle) -> Result<String, String> {
@@ -76,75 +68,4 @@ fn copy_directory(
         }
     }
     Ok(())
-}
-
-fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
-    let config_dir = app_handle.path().app_config_dir().map_err(|e| format!("Не удалось получить папку конфигурации: {}", e))?;
-    let db_path = config_dir.join("tasks.db");
-    println!("Путь к tasks.db: {:?}", db_path); 
-    if let Some(parent) = db_path.parent() {
-        fs::create_dir_all(parent).map_err(|e| format!("Не удалось создать папку конфигурации: {}", e))?;
-    }
-    Ok(db_path)
-}
-
-fn init_db(conn: &Connection) -> Result<(), String> {
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
-            source TEXT NOT NULL,
-            destination TEXT NOT NULL
-        )",
-        [],
-    )
-    .map_err(|e| format!("Ошибка создания таблицы: {}", e))?;
-    Ok(())
-}
-
-#[tauri::command]
-pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Result<(), String> {
-    let db_path = get_db_path(&app_handle)?;
-    let conn = Connection::open(&db_path).map_err(|e| format!("Ошибка открытия базы данных: {}", e))?;
-
-    init_db(&conn)?;
-
-    conn.execute("DELETE FROM tasks", [])
-        .map_err(|e| format!("Ошибка очистки таблицы: {}", e))?;
-
-    for task in tasks {
-        conn.execute(
-            "INSERT INTO tasks (name, source, destination) VALUES (?1, ?2, ?3)",
-            params![task.name, task.source, task.destination],
-        )
-        .map_err(|e| format!("Ошибка вставки задачи '{}': {}", task.name, e))?;
-    }
-
-    Ok(())
-}
-
-#[tauri::command]
-pub fn load_tasks(app_handle: tauri::AppHandle) -> Result<Vec<BackupTask>, String> {
-    let db_path = get_db_path(&app_handle)?;
-    let conn = Connection::open(&db_path).map_err(|e| format!("Ошибка открытия базы данных: {}", e))?;
-
-    init_db(&conn)?;
-
-    let mut stmt = conn
-        .prepare("SELECT name, source, destination FROM tasks")
-        .map_err(|e| format!("Ошибка подготовки запроса: {}", e))?;
-
-    let tasks = stmt
-        .query_map([], |row| {
-            Ok(BackupTask {
-                name: row.get(0)?,
-                source: row.get(1)?,
-                destination: row.get(2)?,
-            })
-        })
-        .map_err(|e| format!("Ошибка чтения задач: {}", e))?
-        .collect::<Result<Vec<BackupTask>, _>>()
-        .map_err(|e| format!("Ошибка обработки результата: {}", e))?;
-
-    Ok(tasks)
 }

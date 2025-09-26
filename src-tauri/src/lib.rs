@@ -9,8 +9,8 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             backup::file_backup::backup_directory,
-            backup::file_backup::save_tasks,
-            backup::file_backup::load_tasks
+            backup::database::save_tasks,
+            backup::database::load_tasks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
