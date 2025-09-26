@@ -12,13 +12,14 @@ interface TaskListPanelProps {
   onDeleteTask: (index: number) => void;
   onDeleteAllTasks: () => void;
   onStartBackups: () => void;
+  onStartSingleBackup: (index: number) => void;
   isBackingUp: boolean;
 }
 
 /**
  * Компонент для управления существующими задачами.
  * Можно удалить как отдельно взятую задачу, так и все разом.
- * Также запускает процесс бэкапа всех задач.
+ * Также запускает процесс бэкапа всех задач или отдельной задачи.
  *
  * @returns {JSX.Element}
  */
@@ -27,6 +28,7 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
   onDeleteTask,
   onDeleteAllTasks,
   onStartBackups,
+  onStartSingleBackup,
   isBackingUp,
 }) => {
   return (
@@ -62,12 +64,21 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
                 <span>Источник: {task.source}</span>
                 <span>Цель: {task.destination}</span>
               </div>
-              <button
-                onClick={() => onDeleteTask(index)}
-                className={styles.deleteButton}
-              >
-                Удалить
-              </button>
+              <div className={styles.taskButtons}>
+                <button
+                  onClick={() => onStartSingleBackup(index)}
+                  className={styles.startSingleButton}
+                  disabled={isBackingUp}
+                >
+                  Запустить
+                </button>
+                <button
+                  onClick={() => onDeleteTask(index)}
+                  className={styles.deleteButton}
+                >
+                  Удалить
+                </button>
+              </div>
             </li>
           ))}
         </ul>

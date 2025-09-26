@@ -21,9 +21,9 @@ interface Progress {
 }
 
 /**
- * Компонент главной страницы, на которой располагаются основные компоненты-виджеты для управления созданием, выполнением и отображением результатов задач бекапа.
+ * Компонент главной страницы, на которой располагаются основные компоненты-виджеты для управления созданием, выполнением и отображением результатов задач бэкапа.
  *
- * @returns {JSX.component}
+ * @returns {JSX.Element}
  */
 
 const MainPage: React.FC = () => {
@@ -104,6 +104,28 @@ const MainPage: React.FC = () => {
     setIsBackingUp(false);
   };
 
+  const handleStartSingleBackup = async (index: number) => {
+    setStatus([]);
+    setProgress(new Map());
+    setIsBackingUp(true);
+
+    const task = tasks[index];
+    const newStatus: string[] = [];
+    try {
+      const result = await invoke("backup_directory", {
+        source: task.source,
+        destination: task.destination,
+        taskName: task.name,
+      });
+      newStatus.push(result as string);
+    } catch (error) {
+      newStatus.push(`Ошибка в задаче "${task.name}": ${error}`);
+    }
+
+    setStatus(newStatus);
+    setIsBackingUp(false);
+  };
+
   return (
     <div className={styles.container}>
       <h1>Бэкап файлов</h1>
@@ -121,6 +143,7 @@ const MainPage: React.FC = () => {
         onDeleteTask={handleDeleteTask}
         onDeleteAllTasks={handleDeleteAllTasks}
         onStartBackups={handleStartBackups}
+        onStartSingleBackup={handleStartSingleBackup}
         isBackingUp={isBackingUp}
       />
       {progress.size > 0 && (
@@ -135,7 +158,7 @@ const MainPage: React.FC = () => {
           ))}
         </div>
       )}
-      {status.length > 0 && <StatusSection status={status} />}
+      <StatusSection status={status} />
     </div>
   );
 };
