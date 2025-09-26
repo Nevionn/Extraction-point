@@ -4,6 +4,7 @@ import { listen } from "@tauri-apps/api/event";
 import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
 import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
+import StatusSection from "../../components/StatusSection/StatusSection";
 import styles from "./MainPage.module.css";
 
 interface BackupTask {
@@ -127,18 +128,7 @@ const MainPage: React.FC = () => {
           ))}
         </div>
       )}
-      {status.length > 0 && (
-        <div className={styles.statusSection}>
-          <h2>Статус бэкапов</h2>
-          <ul className={styles.statusList}>
-            {status.map((message, index) => (
-              <li key={index} className={styles.statusItem}>
-                {message}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {status.length > 0 && <StatusSection status={status} />}
     </div>
   );
 };
