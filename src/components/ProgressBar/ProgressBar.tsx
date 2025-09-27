@@ -16,7 +16,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ taskName, progress }) => {
   return (
     <div className={styles.progressContainer}>
       <div className={styles.progressLabel}>
-        {taskName}: {progress.toFixed(0)}%
+        <span className={styles.taskName}>{taskName}</span>:{" "}
+        {progress.toFixed(0)}%
       </div>
       <div className={styles.progressBar}>
         <div

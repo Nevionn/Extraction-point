@@ -23,7 +23,7 @@ pub fn backup_directory(source: String, destination: String, task_name: String, 
 
     copy_directory(&source_path, &dest_path, &mut copied_files, total_files, &task_name, &app_handle)?;
 
-    Ok(format!("Задача '{}' успешно выполнена: скопировано {} файлов", task_name, copied_files))
+    Ok(format!("Задача '{}' успешно выполнена: файлов скопировано: {} ", task_name, copied_files))
 }
 
 fn count_files(dir: &Path) -> Result<usize, String> {

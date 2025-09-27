@@ -21,3 +21,7 @@
   background-color: #28a745;
   transition: width 0.3s ease-in-out;
 }
+
+.taskName {
+  color: #b486f1;
+}

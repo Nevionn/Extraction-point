@@ -1,7 +1,9 @@
 .tasksSection {
   width: 100%;
   max-width: 600px;
-  background-color: white;
+  background-color: #353535;
+  border: 2px solid #4d4d4d;
+  color: #f3f0f0;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -52,41 +54,44 @@
 
 .deleteButton {
   padding: 6px 12px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: #3d3d3d;
+  border: 1px solid #dc3545;
+  color: #f65060;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .deleteButton:hover {
   background-color: #c82333;
+  color: #f3f0f0;
 }
 
 .deleteAllButton {
   padding: 6px 12px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: #3d3d3d;
+  border: 1px solid #dc3545;
+  color: #f65060;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .deleteAllButton:hover {
   background-color: #c82333;
+  color: #f3f0f0;
 }
 
 .startButton {
   padding: 6px 12px;
-  background-color: #8457be;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid #b486f1;
+  background-color: #3d3d3d;
+  color: #b486f1;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .startButton:hover {
-  background-color: #c82333;
+  background-color: #b486f1;
+  color: #f3f0f0;
 }
 
 .startButton:disabled {
@@ -96,15 +101,16 @@
 
 .startSingleButton {
   padding: 6px 12px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: #3d3d3d;
+  border: 1px solid #28a745;
+  color: #3bcb5c;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .startSingleButton:hover {
   background-color: #218838;
+  color: #f3f0f0;
 }
 
 .startSingleButton:disabled {

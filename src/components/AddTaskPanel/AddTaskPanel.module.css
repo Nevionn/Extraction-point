@@ -1,7 +1,9 @@
 .addTaskSection {
   width: 100%;
   max-width: 600px;
-  background-color: white;
+  background-color: #353535;
+  border: 2px solid #4d4d4d;
+  color: #f3f0f0;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -16,39 +18,50 @@
 .inputGroup label {
   margin-right: 10px;
   min-width: 120px;
+  color: #f3f0f0;
 }
 
 .input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ccc;
+  color: #b17df0;
+  border: 2px solid #4d4d4d;
+  background-color: #3d3d3d;
   border-radius: 4px;
 }
 
 .button {
   margin-left: 10px;
   padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #3792f4;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .button:hover {
   background-color: #0056b3;
+  color: #f3f0f0;
 }
 
 .addButton {
   width: 100%;
   padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: transparent;
+  border: 1px solid #28a745;
+  color: #3bcb5c;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+.addButton:disabled:hover {
+  background-color: #555b60;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .addButton:hover {
   background-color: #218838;
+  color: #f3f0f0;
 }
