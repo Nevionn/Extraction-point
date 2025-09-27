@@ -60,10 +60,19 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
           {tasks.map((task, index) => (
             <li key={index} className={styles.taskItem}>
               <div className={styles.taskDetails}>
-                <span>Название: {task.name}</span>
-                <span>Источник: {task.source}</span>
-                <span>Цель: {task.destination}</span>
+                <span>
+                  Название: <span className={styles.taskName}>{task.name}</span>
+                </span>
+                <span>
+                  Источник:{" "}
+                  <span className={styles.taskPath}>{task.source}</span>
+                </span>
+                <span>
+                  Цель:{" "}
+                  <span className={styles.taskPath}>{task.destination}</span>
+                </span>
               </div>
+
               <div className={styles.taskButtons}>
                 <button
                   onClick={() => onStartSingleBackup(index)}

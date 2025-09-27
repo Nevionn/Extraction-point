@@ -29,9 +29,10 @@
 .taskItem {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  gap: 10px;
 }
 
 .taskItem:last-child {
@@ -41,10 +42,24 @@
 .taskDetails {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .taskDetails span {
   margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.taskName {
+  color: #b486f1;
+  font-weight: bold;
+}
+
+.taskPath {
+  color: #4da6ff;
 }
 
 .taskButtons {
