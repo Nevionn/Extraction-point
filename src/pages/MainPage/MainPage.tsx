@@ -45,6 +45,11 @@ const MainPage: React.FC = () => {
     });
   };
 
+  const handleDeleteAllTasksWithProgress = () => {
+    handleDeleteAllTasks();
+    setProgress(new Map());
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Бэкап файлов</h1>
@@ -64,7 +69,7 @@ const MainPage: React.FC = () => {
           <TaskListPanel
             tasks={tasks}
             onDeleteTask={handleDeleteTaskWithProgress}
-            onDeleteAllTasks={handleDeleteAllTasks}
+            onDeleteAllTasks={handleDeleteAllTasksWithProgress}
             onStartBackups={handleStartBackups}
             onStartSingleBackup={handleStartSingleBackup}
             isBackingUp={isBackingUp}
