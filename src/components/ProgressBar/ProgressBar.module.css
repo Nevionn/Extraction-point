@@ -6,6 +6,9 @@
 .progressLabel {
   margin-bottom: 5px;
   font-weight: bold;
+  font-family: "WDXL Lubrifont TC";
+  font-size: large;
+  letter-spacing: 2px;
 }
 
 .progressBar {

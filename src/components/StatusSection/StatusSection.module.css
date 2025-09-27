@@ -1,5 +1,5 @@
 .statusSection {
-  min-height: 244px;
+  min-height: 254px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -22,6 +22,8 @@
   padding: 12px 10px;
   min-height: 35px;
   background-color: #272727;
+  font-family: "WDXL Lubrifont TC";
+  font-size: large;
 }
 
 .statusItem {

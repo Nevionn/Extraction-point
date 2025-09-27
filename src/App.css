@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "WDXL Lubrifont TC";
+  src: url("./fonts/WDXLLubrifontTC-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 html,
 body {
   margin: 0;

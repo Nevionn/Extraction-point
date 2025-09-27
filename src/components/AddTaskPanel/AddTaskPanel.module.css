@@ -1,5 +1,5 @@
 .addTaskSection {
-  height: 244px;
+  height: 254px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -8,6 +8,8 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "WDXL Lubrifont TC";
+  font-size: large;
 }
 
 .titleItem {
@@ -38,6 +40,8 @@
   border: 2px solid #4d4d4d;
   background-color: #3d3d3d;
   border-radius: 4px;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .button {
@@ -48,6 +52,8 @@
   color: #3792f4;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .button:hover {
@@ -66,6 +72,8 @@
   color: #3bcb5c;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .addButton:disabled:hover {

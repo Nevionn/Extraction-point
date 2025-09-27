@@ -1,5 +1,5 @@
 .tasksSection {
-  min-height: 244px;
+  min-height: 254px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -8,6 +8,8 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "WDXL Lubrifont TC";
+  font-size: large;
 }
 
 .header {
@@ -87,6 +89,8 @@
   color: #f65060;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .deleteButton:hover {
@@ -104,6 +108,8 @@
   color: #f65060;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .deleteAllButton:hover {
@@ -121,6 +127,8 @@
   color: #b486f1;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .startButton:hover {
@@ -140,6 +148,8 @@
   color: #3bcb5c;
   border-radius: 6px;
   cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
 }
 
 .startSingleButton:hover {
