@@ -1,0 +1,24 @@
+.progresItem {
+  min-height: 244px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #353535;
+  border: 2px solid #4d4d4d;
+  color: #f3f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.noTask {
+  color: #aaa;
+  font-style: italic;
+  display: block;
+  margin-top: 20px;
+}
+
+h2 {
+  color: #f3f0f0;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}

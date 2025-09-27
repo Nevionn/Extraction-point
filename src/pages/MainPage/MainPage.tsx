@@ -3,7 +3,7 @@ import { useBackupTasks } from "../../hooks/useBackupTasks";
 import { useBackupProgress } from "../../hooks/useBackupProgress";
 import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
 import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
-import ProgressBar from "../../components/ProgressBar/ProgressBar";
+import ProgressSection from "../../components/ProgressSection/ProgressSection";
 import StatusSection from "../../components/StatusSection/StatusSection";
 import styles from "./MainPage.module.css";
 
@@ -78,20 +78,7 @@ const MainPage: React.FC = () => {
 
         {/* Правая колонка */}
         <div className={styles.column}>
-          <div className={styles.progresItem}>
-            <h2>Прогресс задачи</h2>
-            {progress.size === 0 ? (
-              <span className={styles.noTask}>Нет активных процессов</span>
-            ) : (
-              Array.from(progress.values()).map((prog) => (
-                <ProgressBar
-                  key={prog.taskName || Math.random()}
-                  taskName={prog.taskName}
-                  progress={prog.progress}
-                />
-              ))
-            )}
-          </div>
+          <ProgressSection progress={progress} />
           <StatusSection status={status} />
         </div>
       </div>
