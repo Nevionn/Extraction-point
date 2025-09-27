@@ -14,7 +14,7 @@ interface StatusSectionProps {
 const StatusSection: React.FC<StatusSectionProps> = ({ status }) => {
   return (
     <div className={styles.statusSection}>
-      <h2>Статус бэкапов</h2>
+      <h2>Статус задачи</h2>
       <ul className={styles.statusList}>
         {status.map((message, index) => {
           const match = message.match(/^Задача '(.+?)'(.+)$/);

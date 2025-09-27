@@ -74,7 +74,7 @@ const MainPage: React.FC = () => {
         {/* Правая колонка */}
         <div className={styles.column}>
           <div className={styles.progresItem}>
-            <h2>Прогресс бэкапов</h2>
+            <h2>Прогресс задачи</h2>
             {Array.from(progress.values()).map((prog) => (
               <ProgressBar
                 key={prog.taskName}

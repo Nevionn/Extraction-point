@@ -1,5 +1,5 @@
 .statusSection {
-  height: 179px;
+  min-height: 179px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -15,6 +15,7 @@
   padding: 0;
   border-radius: 8px;
   padding: 12px 10px;
+  min-height: 35px;
   background-color: #272727;
 }
 
