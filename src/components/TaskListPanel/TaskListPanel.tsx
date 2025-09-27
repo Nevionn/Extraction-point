@@ -54,7 +54,7 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
         )}
       </div>
       {tasks.length === 0 ? (
-        <p>Нет задач. Добавьте новую.</p>
+        <p className={styles.noTask}>Нет задач. Добавьте новую.</p>
       ) : (
         <ul className={styles.taskList}>
           {tasks.map((task, index) => (

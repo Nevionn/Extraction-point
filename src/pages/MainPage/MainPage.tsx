@@ -75,13 +75,17 @@ const MainPage: React.FC = () => {
         <div className={styles.column}>
           <div className={styles.progresItem}>
             <h2>Прогресс задачи</h2>
-            {Array.from(progress.values()).map((prog) => (
-              <ProgressBar
-                key={prog.taskName}
-                taskName={prog.taskName}
-                progress={prog.progress}
-              />
-            ))}
+            {progress.size === 0 ? (
+              <span className={styles.noTask}>Нет активных процессов</span>
+            ) : (
+              Array.from(progress.values()).map((prog) => (
+                <ProgressBar
+                  key={prog.taskName || Math.random()}
+                  taskName={prog.taskName}
+                  progress={prog.progress}
+                />
+              ))
+            )}
           </div>
           <StatusSection status={status} />
         </div>

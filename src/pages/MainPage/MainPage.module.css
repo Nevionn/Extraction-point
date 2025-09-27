@@ -21,6 +21,13 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.noTask {
+  color: #aaa;
+  font-style: italic;
+  display: block;
+  margin-top: 15px;
+}
+
 .title {
   color: #f3f0f0;
   text-align: center;
