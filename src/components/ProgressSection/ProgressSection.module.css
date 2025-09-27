@@ -22,3 +22,8 @@ h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
+
+.title {
+  font-family: "Russo One", Arial, sans-serif;
+  letter-spacing: 1px;
+}

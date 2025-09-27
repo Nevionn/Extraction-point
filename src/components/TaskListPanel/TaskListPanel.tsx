@@ -37,7 +37,7 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
   return (
     <div className={styles.tasksSection}>
       <div className={styles.header}>
-        <h2>Список задач бэкапа</h2>
+        <h2 className={styles.title}>Список задач</h2>
         {tasks.length > 0 && (
           <div className={styles.headerButtons}>
             <button

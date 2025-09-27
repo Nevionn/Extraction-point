@@ -14,7 +14,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+}
+
+.title {
+  font-family: "Russo One", Arial, sans-serif;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
 .headerButtons {

@@ -14,7 +14,7 @@ interface ProgressSectionProps {
 const ProgressSection: React.FC<ProgressSectionProps> = ({ progress }) => {
   return (
     <div className={styles.progresItem}>
-      <h2>Прогресс задачи</h2>
+      <h2 className={styles.title}>Прогресс задачи</h2>
       {progress.size === 0 ? (
         <span className={styles.noTask}>Нет активных процессов</span>
       ) : (

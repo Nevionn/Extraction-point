@@ -61,7 +61,9 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
 
   return (
     <div className={styles.addTaskSection}>
-      <h2>Добавить задачу бэкапа</h2>
+      <div className={styles.titleItem}>
+        <h2 className={styles.title}>Добавить задачу бэкапа</h2>
+      </div>
       <div className={styles.inputGroup}>
         <label>Название задачи:</label>
         <input
