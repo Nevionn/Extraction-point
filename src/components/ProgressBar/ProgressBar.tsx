@@ -9,15 +9,15 @@ interface ProgressBarProps {
 /**
  * Компонент для отображения состояния процесса копирования файлов
  *
- * @returns {JSX.component}
+ * @returns {JSX.Element}
  */
-
 const ProgressBar: React.FC<ProgressBarProps> = ({ taskName, progress }) => {
   return (
     <div className={styles.progressContainer}>
       <div className={styles.progressLabel}>
         <span className={styles.taskName}>{taskName}</span>:{" "}
-        {progress.toFixed(0)}%
+        {progress.toFixed(0)}
+        <span className={styles.percentSign}>%</span>
       </div>
       <div className={styles.progressBar}>
         <div

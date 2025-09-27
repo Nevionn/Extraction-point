@@ -9,6 +9,16 @@
   font-family: "WDXL Lubrifont TC";
   font-size: large;
   letter-spacing: 2px;
+  color: #f3f0f0;
+}
+
+.taskName {
+  color: #b486f1;
+}
+
+.percentSign {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: #f3f0f0;
 }
 
 .progressBar {
@@ -23,8 +33,4 @@
   height: 100%;
   background-color: #28a745;
   transition: width 0.3s ease-in-out;
-}
-
-.taskName {
-  color: #b486f1;
 }
