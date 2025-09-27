@@ -1,5 +1,8 @@
 import React from "react";
 import styles from "./TaskListPanel.module.css";
+import { HiRocketLaunch } from "react-icons/hi2";
+import { MdDeleteForever } from "react-icons/md";
+import "../../App.css";
 
 interface BackupTask {
   name: string;
@@ -42,13 +45,14 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
               className={styles.startButton}
               disabled={tasks.length === 0 || isBackingUp}
             >
-              {isBackingUp ? "Выполняется..." : "Запустить бэкапы"}
+              {isBackingUp ? "Выполняется..." : "Запустить бэкапы"}{" "}
+              <HiRocketLaunch className="reactIcon" />
             </button>
             <button
               onClick={onDeleteAllTasks}
               className={styles.deleteAllButton}
             >
-              Удалить все задачи
+              Удалить все задачи <MdDeleteForever className="reactIcon" />
             </button>
           </div>
         )}

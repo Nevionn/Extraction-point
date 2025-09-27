@@ -1,6 +1,7 @@
 import React from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 import styles from "./AddTaskPanel.module.css";
+import { MdTask } from "react-icons/md";
 
 interface AddTaskPanelProps {
   name: string;
@@ -104,7 +105,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
         className={styles.addButton}
         disabled={!name || !source || !destination}
       >
-        Добавить задачу
+        Добавить задачу <MdTask className="reactIcon" />
       </button>
     </div>
   );
