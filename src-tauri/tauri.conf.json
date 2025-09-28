@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "pc_backup",
+  "productName": "Extraction point",
   "version": "0.1.0",
   "identifier": "com.ghoul.pc_backup",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "pc_backup",
+        "title": "Extraction point",
         "width": 800,
         "height": 600
       }
