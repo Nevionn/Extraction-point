@@ -35,6 +35,13 @@ pub fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
     Ok(db_path)
 }
 
+#[tauri::command]
+pub fn get_db_path_to_str(app_handle: tauri::AppHandle) -> Result<String, String> {
+    get_db_path(&app_handle)
+        .map(|path| path.to_string_lossy().into_owned())
+        .map_err(|e| format!("Ошибка получения пути к базе данных: {}", e))
+}
+
 // Инициализация таблицы задач
 fn init_db(conn: &Connection) -> Result<(), String> {
     println!("Инициализация таблицы задач");

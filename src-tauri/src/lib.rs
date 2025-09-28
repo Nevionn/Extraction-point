@@ -13,6 +13,7 @@ pub fn run() {
             backup::file_backup::backup_directory,
             backup::database::save_tasks,
             backup::database::load_tasks,
+            backup::database::get_db_path_to_str
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
