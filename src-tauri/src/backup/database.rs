@@ -1,8 +1,8 @@
-use rusqlite::{params, Connection};
-use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 use tauri::Manager;
+use rusqlite::{params, Connection, OptionalExtension};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BackupTask {
@@ -51,7 +51,7 @@ fn init_db(conn: &Connection) -> Result<(), String> {
     conn.execute(
         "CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
             source TEXT NOT NULL,
             destination TEXT NOT NULL
         )",
@@ -62,6 +62,25 @@ fn init_db(conn: &Connection) -> Result<(), String> {
         format!("Ошибка создания таблицы: {}", e)
     })?;
     println!("Таблица задач создана или уже существует");
+    Ok(())
+}
+
+fn check_duplicate_task(conn: &Connection, task: &BackupTask) -> Result<(), String> {
+    // Проверка по source и destination
+    let mut stmt = conn
+        .prepare("SELECT name FROM tasks WHERE source = ?1 AND destination = ?2")
+        .map_err(|e| format!("Ошибка проверки путей задачи: {}", e))?;
+    let existing_task: Option<String> = stmt
+        .query_row([task.source.as_str(), task.destination.as_str()], |row| row.get(0))
+        .optional()
+        .map_err(|e| format!("Ошибка выполнения запроса на пути: {}", e))?;
+    if let Some(existing_name) = existing_task {
+        return Err(format!(
+            "Пути уже используются в задаче '{}'",
+            existing_name
+        ));
+    }
+
     Ok(())
 }
 
@@ -77,12 +96,9 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
 
     init_db(&conn)?;
 
-    conn.execute("DELETE FROM tasks", []).map_err(|e| {
-        println!("Ошибка очистки таблицы: {:?}", e);
-        format!("Ошибка очистки таблицы: {}", e)
-    })?;
-
-    for task in tasks {
+    for task in &tasks {
+        // Проверка дубликатов перед вставкой
+        check_duplicate_task(&conn, task)?;
         conn.execute(
             "INSERT INTO tasks (name, source, destination) VALUES (?1, ?2, ?3)",
             params![task.name, task.source, task.destination],

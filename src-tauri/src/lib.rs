@@ -1,4 +1,6 @@
 use tauri_plugin_dialog;
+use tauri_plugin_opener;
+use tauri_plugin_clipboard_manager;
 
 mod backup;
 

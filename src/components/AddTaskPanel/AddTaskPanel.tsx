@@ -1,7 +1,7 @@
 import React from "react";
 import { open } from "@tauri-apps/plugin-dialog";
-import styles from "./AddTaskPanel.module.css";
 import { MdTask } from "react-icons/md";
+import styles from "./AddTaskPanel.module.css";
 
 interface AddTaskPanelProps {
   name: string;
@@ -11,15 +11,15 @@ interface AddTaskPanelProps {
   onSourceChange: (value: string) => void;
   onDestinationChange: (value: string) => void;
   onAddTask: () => void;
+  onStatusUpdate: (status: string[]) => void;
 }
 
 /**
  * Компонент для создание задачи.
  * Принимает: название задачи, входную и выходную директорию
  *
- * @returns {JSX.component}
+ * @returns {JSX.Element}
  */
-
 const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   name,
   source,
@@ -28,6 +28,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   onSourceChange,
   onDestinationChange,
   onAddTask,
+  onStatusUpdate,
 }) => {
   const handleSelectSource = async () => {
     try {
@@ -41,6 +42,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
       }
     } catch (error) {
       console.error("Ошибка выбора исходной папки:", error);
+      onStatusUpdate(["Ошибка выбора исходной папки"]);
     }
   };
 
@@ -56,6 +58,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
       }
     } catch (error) {
       console.error("Ошибка выбора целевой папки:", error);
+      onStatusUpdate(["Ошибка выбора целевой папки"]);
     }
   };
 

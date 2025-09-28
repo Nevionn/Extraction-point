@@ -88,6 +88,7 @@ const MainPage: React.FC = () => {
             onSourceChange={setSource}
             onDestinationChange={setDestination}
             onAddTask={handleAddTask}
+            onStatusUpdate={setStatus}
           />
           <TaskListPanel
             tasks={tasks}

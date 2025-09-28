@@ -32,25 +32,33 @@ export const useBackupTasks = () => {
     loadTasks();
   }, []);
 
-  const saveTasks = async (newTasks: BackupTask[]) => {
+  const saveTasks = async (newTask: BackupTask) => {
     try {
-      await invoke("save_tasks", { tasks: newTasks });
+      await invoke("save_tasks", { tasks: [newTask] });
+      // Синхронизация с базой после успешного сохранения
+      const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
+      setTasks(loadedTasks);
     } catch (error) {
-      console.error("Ошибка при сохранении задач:", error);
-      setStatus((prev) => [...prev, `Ошибка сохранения задач: ${error}`]);
+      throw error;
     }
   };
 
-  const handleAddTask = () => {
-    if (name && source && destination) {
-      const newTasks = [...tasks, { name, source, destination }];
-      setTasks(newTasks);
+  const handleAddTask = async () => {
+    if (!name || !source || !destination) {
+      setStatus((prev) => [...prev, "Ошибка: Заполните все поля задачи"]);
+      return;
+    }
+
+    const newTask: BackupTask = { name, source, destination };
+    try {
+      await saveTasks(newTask);
+      setStatus((prev) => [...prev, `Задача '${name}' успешно добавлена`]);
       setName("");
       setSource("");
       setDestination("");
-      saveTasks(newTasks);
-    } else {
-      setStatus((prev) => [...prev, "Ошибка: Заполните все поля задачи"]);
+    } catch (error) {
+      console.error("Ошибка добавления задачи:", error);
+      setStatus((prev) => [...prev, `Задача '${name}' не добавлена: ${error}`]);
     }
   };
 
@@ -59,14 +67,14 @@ export const useBackupTasks = () => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
     setStatus((prev) => prev.filter((_, i) => i !== index));
-    saveTasks(newTasks);
+    saveTasks(newTasks[0] || { name: "", source: "", destination: "" });
     return taskName; // Возвращаем имя задачи для удаления прогресса
   };
 
   const handleDeleteAllTasks = () => {
     setTasks([]);
     setStatus([]);
-    saveTasks([]);
+    saveTasks({ name: "", source: "", destination: "" });
   };
 
   return {
