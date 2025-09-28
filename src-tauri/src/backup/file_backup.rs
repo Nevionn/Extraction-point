@@ -1,10 +1,14 @@
 use std::fs;
 use std::path::Path;
-use tauri::{Emitter};
-
+use tauri::Emitter;
 
 #[tauri::command]
-pub fn backup_directory(source: String, destination: String, task_name: String, app_handle: tauri::AppHandle) -> Result<String, String> {
+pub fn backup_directory(
+    source: String,
+    destination: String,
+    task_name: String,
+    app_handle: tauri::AppHandle,
+) -> Result<String, String> {
     let source_path = Path::new(&source);
     let dest_path = Path::new(&destination);
 
@@ -14,16 +18,29 @@ pub fn backup_directory(source: String, destination: String, task_name: String, 
 
     if !dest_path.exists() {
         if let Err(e) = fs::create_dir_all(dest_path) {
-            return Err(format!("Не удалось создать целевую директорию {}: {}", destination, e));
+            return Err(format!(
+                "Не удалось создать целевую директорию {}: {}",
+                destination, e
+            ));
         }
     }
 
     let total_files = count_files(&source_path)?;
     let mut copied_files = 0;
 
-    copy_directory(&source_path, &dest_path, &mut copied_files, total_files, &task_name, &app_handle)?;
+    copy_directory(
+        &source_path,
+        &dest_path,
+        &mut copied_files,
+        total_files,
+        &task_name,
+        &app_handle,
+    )?;
 
-    Ok(format!("Задача '{}' успешно выполнена: файлов скопировано: {} ", task_name, copied_files))
+    Ok(format!(
+        "Задача '{}' успешно выполнена: файлов скопировано: {} ",
+        task_name, copied_files
+    ))
 }
 
 fn count_files(dir: &Path) -> Result<usize, String> {
@@ -56,14 +73,24 @@ fn copy_directory(
             if !dst_path.exists() {
                 fs::create_dir_all(&dst_path).map_err(|e| e.to_string())?;
             }
-            copy_directory(&src_path, &dst_path, copied_files, total_files, task_name, app_handle)?;
+            copy_directory(
+                &src_path,
+                &dst_path,
+                copied_files,
+                total_files,
+                task_name,
+                app_handle,
+            )?;
         } else {
             fs::copy(&src_path, &dst_path).map_err(|e| e.to_string())?;
             *copied_files += 1;
             let progress = (*copied_files as f64 / total_files as f64 * 100.0) as i32;
 
             app_handle
-                .emit("backup_progress", (task_name, *copied_files, total_files, progress))
+                .emit(
+                    "backup_progress",
+                    (task_name, *copied_files, total_files, progress),
+                )
                 .map_err(|e| e.to_string())?;
         }
     }

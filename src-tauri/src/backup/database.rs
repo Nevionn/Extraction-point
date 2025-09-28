@@ -1,8 +1,8 @@
+use rusqlite::{params, Connection};
+use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 use tauri::Manager;
-use rusqlite::{params, Connection};
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BackupTask {
@@ -26,13 +26,23 @@ pub fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
             format!("Не удалось создать папку {}: {}", parent.display(), e)
         })?;
         if parent.exists() {
-            println!("Папка {} успешно создана или уже существует", parent.display());
+            println!(
+                "Папка {} успешно создана или уже существует",
+                parent.display()
+            );
         } else {
             println!("Папка {} НЕ создалась!", parent.display());
             return Err(format!("Папка {} не была создана", parent.display()));
         }
     }
     Ok(db_path)
+}
+
+#[tauri::command]
+pub fn get_db_path_to_str(app_handle: tauri::AppHandle) -> Result<String, String> {
+    get_db_path(&app_handle)
+        .map(|path| path.to_string_lossy().into_owned())
+        .map_err(|e| format!("Ошибка получения пути к базе данных: {}", e))
 }
 
 // Инициализация таблицы задач
@@ -67,11 +77,10 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
 
     init_db(&conn)?;
 
-    conn.execute("DELETE FROM tasks", [])
-        .map_err(|e| {
-            println!("Ошибка очистки таблицы: {:?}", e);
-            format!("Ошибка очистки таблицы: {}", e)
-        })?;
+    conn.execute("DELETE FROM tasks", []).map_err(|e| {
+        println!("Ошибка очистки таблицы: {:?}", e);
+        format!("Ошибка очистки таблицы: {}", e)
+    })?;
 
     for task in tasks {
         conn.execute(

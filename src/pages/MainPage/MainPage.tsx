@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useBackupTasks } from "../../hooks/useBackupTasks";
 import { useBackupProgress } from "../../hooks/useBackupProgress";
 import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
 import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
 import ProgressSection from "../../components/ProgressSection/ProgressSection";
 import StatusSection from "../../components/StatusSection/StatusSection";
+import SettingsModal from "../../components/modals/SettingsModal/SettingsModal";
+import AboutModal from "../../components/modals/AboutModal/AboutModal";
 import styles from "./MainPage.module.css";
+import { RiSettings5Fill } from "react-icons/ri";
+import { FaInfoCircle } from "react-icons/fa";
 
 /**
  * Компонент главной страницы, на которой располагаются основные компоненты-виджеты для управления созданием, выполнением и отображением результатов задач бэкапа.
@@ -36,6 +40,9 @@ const MainPage: React.FC = () => {
     handleStartSingleBackup,
   } = useBackupProgress(tasks, setStatus);
 
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
   const handleDeleteTaskWithProgress = (index: number) => {
     const taskName = handleDeleteTask(index);
     setProgress((prev) => {
@@ -53,6 +60,22 @@ const MainPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Бэкап файлов</h1>
+      <div className={styles.systemItem}>
+        <div className={styles.systemItemElements}>
+          <button
+            className={styles.button}
+            onClick={() => setIsSettingsOpen(true)}
+          >
+            Настройки <RiSettings5Fill className="reactIcon" />
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => setIsAboutOpen(true)}
+          >
+            О программе <FaInfoCircle className="reactIcon" />
+          </button>
+        </div>
+      </div>
 
       <div className={styles.columns}>
         {/* Левая колонка */}
@@ -82,6 +105,12 @@ const MainPage: React.FC = () => {
           <StatusSection status={status} />
         </div>
       </div>
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };

@@ -9,6 +9,41 @@
   box-sizing: border-box;
 }
 
+.systemItem {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 1300px;
+  margin-bottom: 10px;
+}
+
+.systemItemElements {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 35px;
+  gap: 10px;
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px;
+  background-color: transparent;
+  border: 1px solid #e19838;
+  color: #e19838;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
+}
+
+.button:hover {
+  background-color: #e19838;
+  color: #f3f0f0;
+}
+
 .noTask {
   color: #aaa;
   font-style: italic;
