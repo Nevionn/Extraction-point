@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    pc_backup_lib::run()
+    extraction_point_lib::run()
 }

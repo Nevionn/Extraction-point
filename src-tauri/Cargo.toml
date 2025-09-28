@@ -1,12 +1,12 @@
 [package]
-name = "pc_backup"
+name = "extraction_point"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "A Tauri app for file backups and transfers"
+authors = ["Nevionn"]
 edition = "2021"
 
 [lib]
-name = "pc_backup_lib"
+name = "extraction_point_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
