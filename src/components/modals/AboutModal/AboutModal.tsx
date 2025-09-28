@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { IoClose, IoCopyOutline } from "react-icons/io5";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { invoke } from "@tauri-apps/api/core";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import appIcon from "../../../assets/app-icon.webp";
-import { IoClose } from "react-icons/io5";
 import styles from "./AboutModal.module.css";
 
 interface AboutModalProps {
@@ -28,6 +29,17 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
     fetchDbPath();
   }, []);
 
+  const handleCopyPath = async () => {
+    try {
+      // Извлекаем путь к папке, исключая "tasks.db"
+      const folderPath = dbPath.substring(0, dbPath.lastIndexOf("\\"));
+      await writeText(folderPath);
+      console.log("Путь скопирован в буфер обмена:", folderPath);
+    } catch (err) {
+      console.error("Ошибка копирования пути:", err);
+    }
+  };
+
   if (!isOpen) return null;
 
   const handleOpenGitHub = async () => {
@@ -46,17 +58,23 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         </button>
         <h2 className={styles.title}>О программе</h2>
         <div className={styles.content}>
-          <p>
+          <p className={styles.nameProgramm}>
             <strong>Extraction Point</strong>
           </p>
           <img src={appIcon} alt="App Icon" className={styles.appIcon} />
-          <p>
-            Приложение для резервного копирования и переноса файлов между
-            дисками или директориями.
-          </p>
+          <div className={styles.description}>
+            <p>
+              Приложение для резервного копирования и переноса файлов между
+              дисками или директориями.
+            </p>
+          </div>
+
           <p>Путь к базе данных:</p>
           <div className={styles.pathItem}>
             <p>{dbPath}</p>
+            <button className={styles.copyButton} onClick={handleCopyPath}>
+              <IoCopyOutline size={20} />
+            </button>
           </div>
           <p>
             Автор:{" "}
