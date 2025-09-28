@@ -10,7 +10,6 @@ export interface BackupTask {
 /**
  * Хук для управления задачами (сохранение, загрузка, добавление, удаление).
  */
-
 export const useBackupTasks = () => {
   const [tasks, setTasks] = useState<BackupTask[]>([]);
   const [name, setName] = useState("");
@@ -32,9 +31,9 @@ export const useBackupTasks = () => {
     loadTasks();
   }, []);
 
-  const saveTasks = async (newTask: BackupTask) => {
+  const saveTasks = async (tasksToSave: BackupTask[]) => {
     try {
-      await invoke("save_tasks", { tasks: [newTask] });
+      await invoke("save_tasks", { tasks: tasksToSave });
       // Синхронизация с базой после успешного сохранения
       const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
       setTasks(loadedTasks);
@@ -51,7 +50,7 @@ export const useBackupTasks = () => {
 
     const newTask: BackupTask = { name, source, destination };
     try {
-      await saveTasks(newTask);
+      await saveTasks([...tasks, newTask]);
       setStatus((prev) => [...prev, `Задача '${name}' успешно добавлена`]);
       setName("");
       setSource("");
@@ -66,15 +65,15 @@ export const useBackupTasks = () => {
     const taskName = tasks[index].name;
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
-    setStatus((prev) => prev.filter((_, i) => i !== index));
-    saveTasks(newTasks[0] || { name: "", source: "", destination: "" });
+    setStatus((prev) => [...prev, `Задача '${taskName}' удалена`]);
+    saveTasks(newTasks);
     return taskName; // Возвращаем имя задачи для удаления прогресса
   };
 
   const handleDeleteAllTasks = () => {
     setTasks([]);
-    setStatus([]);
-    saveTasks({ name: "", source: "", destination: "" });
+    setStatus((prev) => [...prev, "Все задачи удалены"]);
+    saveTasks([]);
   };
 
   return {

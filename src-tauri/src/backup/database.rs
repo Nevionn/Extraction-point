@@ -45,6 +45,25 @@ pub fn get_db_path_to_str(app_handle: tauri::AppHandle) -> Result<String, String
         .map_err(|e| format!("Ошибка получения пути к базе данных: {}", e))
 }
 
+fn check_duplicate_task(conn: &Connection, task: &BackupTask) -> Result<(), String> {
+    // Проверка по source и destination
+    let mut stmt = conn
+        .prepare("SELECT name FROM tasks WHERE source = ?1 AND destination = ?2")
+        .map_err(|e| format!("Ошибка проверки путей задачи: {}", e))?;
+    let existing_task: Option<String> = stmt
+        .query_row([task.source.as_str(), task.destination.as_str()], |row| row.get(0))
+        .optional()
+        .map_err(|e| format!("Ошибка выполнения запроса на пути: {}", e))?;
+    if let Some(existing_name) = existing_task {
+        return Err(format!(
+            "Пути уже используются в задаче '{}'",
+            existing_name
+        ));
+    }
+
+    Ok(())
+}
+
 // Инициализация таблицы задач
 fn init_db(conn: &Connection) -> Result<(), String> {
     println!("Инициализация таблицы задач");
@@ -65,25 +84,6 @@ fn init_db(conn: &Connection) -> Result<(), String> {
     Ok(())
 }
 
-fn check_duplicate_task(conn: &Connection, task: &BackupTask) -> Result<(), String> {
-    // Проверка по source и destination
-    let mut stmt = conn
-        .prepare("SELECT name FROM tasks WHERE source = ?1 AND destination = ?2")
-        .map_err(|e| format!("Ошибка проверки путей задачи: {}", e))?;
-    let existing_task: Option<String> = stmt
-        .query_row([task.source.as_str(), task.destination.as_str()], |row| row.get(0))
-        .optional()
-        .map_err(|e| format!("Ошибка выполнения запроса на пути: {}", e))?;
-    if let Some(existing_name) = existing_task {
-        return Err(format!(
-            "Пути уже используются в задаче '{}'",
-            existing_name
-        ));
-    }
-
-    Ok(())
-}
-
 #[tauri::command]
 pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Result<(), String> {
     println!("Сохранение задач: {:?}", tasks);
@@ -95,6 +95,12 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
     })?;
 
     init_db(&conn)?;
+
+    // Очищаем таблицу перед сохранением нового списка
+    conn.execute("DELETE FROM tasks", []).map_err(|e| {
+        println!("Ошибка очистки таблицы: {:?}", e);
+        format!("Ошибка очистки таблицы: {}", e)
+    })?;
 
     for task in &tasks {
         // Проверка дубликатов перед вставкой
