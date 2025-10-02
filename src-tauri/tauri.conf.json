@@ -13,8 +13,9 @@
     "windows": [
       {
         "title": "Extraction point",
-        "width": 1418,
-        "height": 801
+        "width": 1460,
+        "height": 844,
+        "center": true
       }
     ],
     "security": {

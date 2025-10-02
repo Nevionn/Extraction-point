@@ -17,12 +17,27 @@
   border-radius: 12px;
   width: 570px;
   max-height: 80vh;
-  height: 50vh;
+  height: 55vh;
   overflow-y: auto;
   color: #f3f0f0;
   font-family: "WDXL Lubrifont TC", Arial, sans-serif !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: #b486f1 #272727;
+}
+
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #272727;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: #b486f1;
+  border-radius: 4px;
 }
 
 .title {

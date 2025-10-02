@@ -14,6 +14,11 @@ interface AboutModalProps {
 const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [dbPath, setDbPath] = useState("Загрузка пути...");
 
+  const BASE_PATH: string =
+    "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\tasks.db";
+
+  const GITHUB_URL: string = "https://github.com/Nevionn/Extraction-point";
+
   useEffect(() => {
     async function fetchDbPath() {
       try {
@@ -21,9 +26,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         setDbPath(path as string);
       } catch (err) {
         console.error("Ошибка получения пути к базе данных:", err);
-        setDbPath(
-          "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\tasks.db"
-        );
+        setDbPath(BASE_PATH);
       }
     }
     fetchDbPath();
@@ -44,7 +47,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
   const handleOpenGitHub = async () => {
     try {
-      await openUrl("https://github.com/Nevionn/Extraction-point");
+      await openUrl(GITHUB_URL);
     } catch (err) {
       console.error("Ошибка открытия ссылки:", err);
     }

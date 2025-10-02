@@ -15,7 +15,7 @@ const StatusSection: React.FC<StatusSectionProps> = ({ status }) => {
   return (
     <div className={styles.statusSection}>
       <h2 className={styles.title}>Статус задачи</h2>
-      <ul className={styles.statusList}>
+      <ul className={styles.statusList} data-testid="status-list">
         {status.map((message, index) => {
           const match = message.match(/^Задача '(.+?)'(.+)$/);
           if (match) {
