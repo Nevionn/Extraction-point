@@ -9,7 +9,7 @@
 
 <div align="center" style="display: flex; align-items: center;">
   <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://simpleicons.org/icons/tauri.svg" alt="Tauri Logo" width="100" height="100">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg" alt="Tauri Logo" width="100" height="100">
   <span style="margin: 0 10px; font-size: 24px;"> </span>
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/512px-Rust_programming_language_black_logo.svg.png" alt="Rust Logo" width="100" height="100">
   <span style="margin: 0 10px; font-size: 24px;"> </span>
