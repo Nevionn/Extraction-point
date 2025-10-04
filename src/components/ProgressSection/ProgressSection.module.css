@@ -1,5 +1,5 @@
 .progresItem {
-  min-height: 254px;
+  height: 254px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -8,6 +8,22 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: #a8a3ae #272727;
+  overflow-y: auto;
+}
+
+.progresItem::-webkit-scrollbar {
+  width: 8px;
+}
+
+.progresItem::-webkit-scrollbar-track {
+  background: #272727;
+}
+
+.progresItem::-webkit-scrollbar-thumb {
+  background-color: #a8a3ae;
+  border-radius: 4px;
 }
 
 .noTask {

@@ -1,5 +1,5 @@
 .tasksSection {
-  min-height: 254px;
+  height: 254px;
   width: 100%;
   max-width: 600px;
   background-color: #353535;
@@ -10,6 +10,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: "WDXL Lubrifont TC";
   font-size: large;
+  scrollbar-width: thin;
+  scrollbar-color: #a8a3ae #272727;
+  overflow-y: auto;
+}
+
+.tasksSection::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tasksSection::-webkit-scrollbar-track {
+  background: #272727;
+}
+
+.tasksSection::-webkit-scrollbar-thumb {
+  background-color: #a8a3ae;
+  border-radius: 4px;
 }
 
 .header {

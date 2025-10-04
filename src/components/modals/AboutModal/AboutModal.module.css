@@ -138,3 +138,26 @@
 .copyButton:hover {
   color: #b486f1;
 }
+
+.versionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.updateButton {
+  background-color: #b486f1;
+  color: #f3f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "WDXL Lubrifont TC", Arial, sans-serif;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+  align-self: flex-start;
+}
+
+.updateButton:hover {
+  background-color: #9f6ee1;
+}

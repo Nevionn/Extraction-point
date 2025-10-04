@@ -26,7 +26,7 @@
   height: 140px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #b486f1 #272727;
+  scrollbar-color: #a8a3ae #272727;
 }
 
 .statusList::-webkit-scrollbar {
@@ -38,7 +38,7 @@
 }
 
 .statusList::-webkit-scrollbar-thumb {
-  background-color: #b486f1;
+  background-color: #a8a3ae;
   border-radius: 4px;
 }
 

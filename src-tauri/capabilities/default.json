@@ -7,7 +7,12 @@
     "core:default",
     "opener:default",
     "dialog:default",
-    "clipboard-manager:allow-write-text",
-    "clipboard-manager:allow-read-text"
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://api.github.com/*" },
+        { "url": "https://github.com/*" }
+      ]
+    }
   ]
 }
