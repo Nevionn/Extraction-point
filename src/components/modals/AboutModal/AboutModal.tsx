@@ -3,8 +3,13 @@ import { IoClose, IoCopyOutline } from "react-icons/io5";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { invoke } from "@tauri-apps/api/core";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
+import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import appIcon from "../../../assets/app-icon.webp";
 import styles from "./AboutModal.module.css";
+
+interface GitHubRelease {
+  tag_name: string;
+}
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -13,11 +18,16 @@ interface AboutModalProps {
 
 const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [dbPath, setDbPath] = useState("Загрузка пути...");
+  const [currentVersion] = useState("1.0.0");
+  const [latestRelease, setLatestRelease] = useState<string | null>(null);
+  const [loadingUpdate, setLoadingUpdate] = useState(true);
 
   const BASE_PATH: string =
     "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\tasks.db";
 
   const GITHUB_URL: string = "https://github.com/Nevionn/Extraction-point";
+  const RELEASES_API_URL: string =
+    "https://api.github.com/repos/Nevionn/Extraction-point/releases/latest";
 
   useEffect(() => {
     async function fetchDbPath() {
@@ -32,9 +42,33 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
     fetchDbPath();
   }, []);
 
+  useEffect(() => {
+    async function checkForUpdates() {
+      try {
+        const response = await tauriFetch(RELEASES_API_URL, {
+          method: "GET",
+          headers: {
+            Accept: "application/vnd.github+json",
+            "User-Agent": "ExtractionPoint/1.0.0", // Требуется для GitHub API
+          },
+        });
+        if (response.ok) {
+          const data: GitHubRelease = await response.json();
+          const latestTag = data.tag_name;
+          setLatestRelease(latestTag);
+          console.log(data);
+        }
+      } catch (err) {
+        console.error("Ошибка проверки обновлений:", err);
+      } finally {
+        setLoadingUpdate(false);
+      }
+    }
+    checkForUpdates();
+  }, []);
+
   const handleCopyPath = async () => {
     try {
-      // Извлекаем путь к папке, исключая "tasks.db"
       const folderPath = dbPath.substring(0, dbPath.lastIndexOf("\\"));
       await writeText(folderPath);
       console.log("Путь скопирован в буфер обмена:", folderPath);
@@ -52,6 +86,19 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
       console.error("Ошибка открытия ссылки:", err);
     }
   };
+
+  const handleOpenReleases = async () => {
+    try {
+      await openUrl(`${GITHUB_URL}/releases`);
+    } catch (err) {
+      console.error("Ошибка открытия релизов:", err);
+    }
+  };
+
+  const hasUpdate =
+    latestRelease &&
+    latestRelease.replace("v", "") > currentVersion &&
+    !loadingUpdate;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -85,7 +132,18 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               Nevionn
             </a>
           </p>
-          <p>Версия: 1.0.0</p>
+          <div className={styles.versionContainer}>
+            <p>Версия: {currentVersion}</p>
+            {hasUpdate && (
+              <button
+                className={styles.updateButton}
+                onClick={handleOpenReleases}
+              >
+                Обновиться до {latestRelease}
+              </button>
+            )}
+            {loadingUpdate && <p>Проверка обновлений...</p>}
+          </div>
         </div>
       </div>
     </div>
