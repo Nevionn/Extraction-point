@@ -17,7 +17,7 @@
   border-radius: 12px;
   width: 570px;
   max-height: 80vh;
-  height: 55vh;
+  height: 60vh;
   overflow-y: auto;
   color: #f3f0f0;
   font-family: "WDXL Lubrifont TC", Arial, sans-serif !important;
@@ -145,19 +145,16 @@
   gap: 8px;
 }
 
-.updateButton {
-  background-color: #b486f1;
-  color: #f3f0f0;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+.updateLink {
+  color: #b486f1;
+  text-decoration: underline;
   cursor: pointer;
   font-family: "WDXL Lubrifont TC", Arial, sans-serif;
-  font-size: 16px;
-  transition: background-color 0.2s ease;
+  font-size: 18px;
+  transition: color 0.2s ease;
   align-self: flex-start;
 }
 
-.updateButton:hover {
-  background-color: #9f6ee1;
+.updateLink:hover {
+  color: #9f6ee1;
 }
