@@ -18,7 +18,7 @@ interface AboutModalProps {
 
 const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [dbPath, setDbPath] = useState("Загрузка пути...");
-  const [currentVersion] = useState("1.0.0");
+  const [currentVersion] = useState("1.1.2");
   const [latestRelease, setLatestRelease] = useState<string | null>(null);
   const [loadingUpdate, setLoadingUpdate] = useState(true);
 
@@ -49,14 +49,13 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
           method: "GET",
           headers: {
             Accept: "application/vnd.github+json",
-            "User-Agent": "ExtractionPoint/1.0.0", // Требуется для GitHub API
+            "User-Agent": "ExtractionPoint/1.0.0",
           },
         });
         if (response.ok) {
           const data: GitHubRelease = await response.json();
           const latestTag = data.tag_name;
           setLatestRelease(latestTag);
-          console.log(data);
         }
       } catch (err) {
         console.error("Ошибка проверки обновлений:", err);
@@ -135,12 +134,9 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
           <div className={styles.versionContainer}>
             <p>Версия: {currentVersion}</p>
             {hasUpdate && (
-              <button
-                className={styles.updateButton}
-                onClick={handleOpenReleases}
-              >
+              <a className={styles.updateLink} onClick={handleOpenReleases}>
                 Обновиться до {latestRelease}
-              </button>
+              </a>
             )}
             {loadingUpdate && <p>Проверка обновлений...</p>}
           </div>
