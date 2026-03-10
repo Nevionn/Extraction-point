@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useBackupTasks } from "../../hooks/useBackupTasks";
 import { useBackupProgress } from "../../hooks/useBackupProgress";
-import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
-import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
-import ProgressSection from "../../components/ProgressSection/ProgressSection";
-import StatusSection from "../../components/StatusSection/StatusSection";
+import AddTaskPanel from "../../components/panels/AddTaskPanel/AddTaskPanel";
+import TaskListPanel from "../../components/panels/TaskListPanel/TaskListPanel";
+import ProgressSection from "../../components/panels/ProgressSection/ProgressSection";
+import StatusSection from "../../components/panels/StatusSection/StatusSection";
 import SettingsModal from "../../components/modals/SettingsModal/SettingsModal";
 import AboutModal from "../../components/modals/AboutModal/AboutModal";
 import styles from "./MainPage.module.css";
