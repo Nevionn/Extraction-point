@@ -1,0 +1,97 @@
+.tasksSection {
+  height: 254px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #353535;
+  border: 2px solid #4d4d4d;
+  color: #f3f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "WDXL Lubrifont TC";
+  font-size: large;
+  scrollbar-width: thin;
+  scrollbar-color: #a8a3ae #272727;
+  overflow-y: auto;
+}
+
+.tasksSection::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tasksSection::-webkit-scrollbar-track {
+  background: #272727;
+}
+
+.tasksSection::-webkit-scrollbar-thumb {
+  background-color: #a8a3ae;
+  border-radius: 4px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: "Russo One", Arial, sans-serif;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.noTask {
+  color: #aaa;
+  font-style: italic;
+  display: block;
+  margin-top: 15px;
+}
+
+.taskList {
+  list-style: none;
+  padding: 0;
+}
+
+.startButton,
+.deleteAllButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "WDXL Lubrifont TC";
+  font-size: medium;
+}
+
+.startButton {
+  border: 1px solid #b486f1;
+  background-color: #3d3d3d;
+  color: #b486f1;
+}
+
+.startButton:hover {
+  background-color: #b486f1;
+  color: #f3f0f0;
+}
+
+.startButton:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.deleteAllButton {
+  border: 1px solid #dc3545;
+  background-color: #3d3d3d;
+  color: #f65060;
+}
+
+.deleteAllButton:hover {
+  background-color: #c82333;
+  color: #f3f0f0;
+}

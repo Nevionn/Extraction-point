@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useBackupTasks } from "../../hooks/useBackupTasks";
 import { useBackupProgress } from "../../hooks/useBackupProgress";
-import AddTaskPanel from "../../components/AddTaskPanel/AddTaskPanel";
-import TaskListPanel from "../../components/TaskListPanel/TaskListPanel";
-import ProgressSection from "../../components/ProgressSection/ProgressSection";
-import StatusSection from "../../components/StatusSection/StatusSection";
+import AddTaskPanel from "../../components/panels/AddTaskPanel/AddTaskPanel";
+import TaskListPanel from "../../components/panels/TaskListPanel/TaskListPanel";
+import ProgressSection from "../../components/panels/ProgressSection/ProgressSection";
+import StatusSection from "../../components/panels/StatusSection/StatusSection";
 import SettingsModal from "../../components/modals/SettingsModal/SettingsModal";
 import AboutModal from "../../components/modals/AboutModal/AboutModal";
 import styles from "./MainPage.module.css";
@@ -12,10 +12,20 @@ import { RiSettings5Fill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
 
 /**
- * Компонент главной страницы, на которой располагаются основные компоненты-виджеты для управления созданием, выполнением и отображением результатов задач бэкапа.
+ * Главная страница приложения бэкапа файлов.
  *
- * @returns {JSX.Element}
+ * Компонент обеспечивает:
+ * - Управление задачами через хук `useBackupTasks`
+ * - Управление прогрессом бэкапов через хук `useBackupProgress`
+ * - Добавление, удаление и запуск задач бэкапа
+ * - Drag&Drop сортировку задач
+ * - Отображение панели добавления задач, списка задач, прогресса и статусов
+ * - Модальные окна "Настройки" и "О программе"
+ *
+ * @component
+ * @returns {JSX.Element} Главная страница приложения
  */
+
 const MainPage: React.FC = () => {
   const {
     tasks,
@@ -28,6 +38,7 @@ const MainPage: React.FC = () => {
     handleAddTask,
     handleDeleteTask,
     handleDeleteAllTasks,
+    updateTasksOrder,
     status,
     setStatus,
   } = useBackupTasks();
@@ -43,7 +54,21 @@ const MainPage: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
-  const handleDeleteTaskWithProgress = (index: number) => {
+  const handleStartSingleBackupWithId = (id: string) => {
+    const index = tasks.findIndex((t) => t.id === id);
+    if (index === -1) return;
+    handleStartSingleBackup(index);
+  };
+
+  /**
+   * Удаление задачи по id с обновлением прогресса
+   * @param {string} id - идентификатор задачи
+   */
+
+  const handleDeleteTaskWithProgress = (id: string) => {
+    const index = tasks.findIndex((t) => t.id === id);
+    if (index === -1) return;
+
     const taskName = handleDeleteTask(index);
     setProgress((prev) => {
       const newProgress = new Map(prev);
@@ -51,6 +76,8 @@ const MainPage: React.FC = () => {
       return newProgress;
     });
   };
+
+  /** Удаление всех задач с очисткой прогресса */
 
   const handleDeleteAllTasksWithProgress = () => {
     handleDeleteAllTasks();
@@ -60,6 +87,8 @@ const MainPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Бэкап файлов</h1>
+
+      {/* Панель системных кнопок */}
       <div className={styles.systemItem}>
         <div className={styles.systemItemElements}>
           <button
@@ -77,9 +106,10 @@ const MainPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Основные колонки страницы */}
       <div className={styles.columns}>
-        {/* Левая колонка */}
         <div className={styles.column}>
+          {/* Панель добавления задач */}
           <AddTaskPanel
             name={name}
             source={source}
@@ -90,23 +120,28 @@ const MainPage: React.FC = () => {
             onAddTask={handleAddTask}
             onStatusUpdate={setStatus}
           />
+
+          {/* Список задач с поддержкой drag&drop */}
           <TaskListPanel
             tasks={tasks}
+            onUpdateTasks={updateTasksOrder}
             onDeleteTask={handleDeleteTaskWithProgress}
             onDeleteAllTasks={handleDeleteAllTasksWithProgress}
             onStartBackups={handleStartBackups}
-            onStartSingleBackup={handleStartSingleBackup}
+            onStartSingleBackup={handleStartSingleBackupWithId}
             isBackingUp={isBackingUp}
           />
         </div>
 
-        {/* Правая колонка */}
         <div className={styles.column}>
+          {/* Прогресс выполнения задач */}
           <ProgressSection progress={progress} />
+          {/* Статусные сообщения */}
           <StatusSection status={status} />
         </div>
       </div>
 
+      {/* Модальные окна */}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
