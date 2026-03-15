@@ -8,22 +8,27 @@ export interface BackupTask {
 }
 
 /**
- * Хук для управления задачами (сохранение, загрузка, добавление, удаление).
+ * Хук для управления задачами (загрузка, сохранение, добавление, удаление)
+ * с гарантированной синхронизацией с базой.
  */
+
 export const useBackupTasks = () => {
   const [tasks, setTasks] = useState<BackupTask[]>([]);
+
   const [name, setName] = useState("");
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
+
   const [status, setStatus] = useState<string[]>([]);
 
+  // Загрузка задач при инициализации
   useEffect(() => {
     const loadTasks = async () => {
       try {
         const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
         setTasks(loadedTasks);
       } catch (error) {
-        console.log("Не удалось загрузить задачи:", error);
+        console.error("Не удалось загрузить задачи:", error);
         setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
       }
     };
@@ -31,17 +36,23 @@ export const useBackupTasks = () => {
     loadTasks();
   }, []);
 
-  const saveTasks = async (tasksToSave: BackupTask[]) => {
+  // Универсальная синхронизация с БД
+  const syncTasks = async (tasksToSave?: BackupTask[]) => {
     try {
-      await invoke("save_tasks", { tasks: tasksToSave });
-      // Синхронизация с базой после успешного сохранения
+      if (tasksToSave) {
+        await invoke("save_tasks", { tasks: tasksToSave });
+      }
       const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
       setTasks(loadedTasks);
+      return loadedTasks;
     } catch (error) {
-      throw error;
+      console.error("Ошибка синхронизации задач:", error);
+      setStatus((prev) => [...prev, `Ошибка синхронизации: ${error}`]);
+      return tasks; // fallback на текущее состояние
     }
   };
 
+  // Добавление задачи в локальное состояние с запросом на синхранизацию
   const handleAddTask = async () => {
     if (!name || !source || !destination) {
       setStatus((prev) => [...prev, "Ошибка: Заполните все поля задачи"]);
@@ -49,31 +60,25 @@ export const useBackupTasks = () => {
     }
 
     const newTask: BackupTask = { name, source, destination };
-    try {
-      await saveTasks([...tasks, newTask]);
-      setStatus((prev) => [...prev, `Задача '${name}' успешно добавлена`]);
-      setName("");
-      setSource("");
-      setDestination("");
-    } catch (error) {
-      console.error("Ошибка добавления задачи:", error);
-      setStatus((prev) => [...prev, `Задача '${name}' не добавлена: ${error}`]);
-    }
+    const updatedTasks = [...tasks, newTask];
+    await syncTasks(updatedTasks);
+
+    setStatus((prev) => [...prev, `Задача '${name}' успешно добавлена`]);
+    setName("");
+    setSource("");
+    setDestination("");
   };
 
-  const handleDeleteTask = (index: number) => {
+  const handleDeleteTask = async (index: number) => {
     const taskName = tasks[index].name;
-    const newTasks = tasks.filter((_, i) => i !== index);
-    setTasks(newTasks);
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    await syncTasks(updatedTasks);
     setStatus((prev) => [...prev, `Задача '${taskName}' удалена`]);
-    saveTasks(newTasks);
-    return taskName; // Возвращаем имя задачи для удаления прогресса
   };
 
-  const handleDeleteAllTasks = () => {
-    setTasks([]);
+  const handleDeleteAllTasks = async () => {
+    await syncTasks([]);
     setStatus((prev) => [...prev, "Все задачи удалены"]);
-    saveTasks([]);
   };
 
   return {
