@@ -1,6 +1,6 @@
 import React from "react";
-import { open } from "@tauri-apps/plugin-dialog";
 import { MdTask } from "react-icons/md";
+import { useSelectDirectory } from "../../hooks/useSelectDirectory";
 import styles from "./AddTaskPanel.module.css";
 
 interface AddTaskPanelProps {
@@ -15,11 +15,12 @@ interface AddTaskPanelProps {
 }
 
 /**
- * Компонент для создание задачи.
+ * Компонент панели для создание задачи.
  * Принимает: название задачи, входную и выходную директорию
  *
  * @returns {JSX.Element}
  */
+
 const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   name,
   source,
@@ -30,37 +31,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
   onAddTask,
   onStatusUpdate,
 }) => {
-  const handleSelectSource = async () => {
-    try {
-      const selected = await open({
-        directory: true,
-        multiple: false,
-        title: "Выберите исходную папку",
-      });
-      if (selected) {
-        onSourceChange(selected as string);
-      }
-    } catch (error) {
-      console.error("Ошибка выбора исходной папки:", error);
-      onStatusUpdate(["Ошибка выбора исходной папки"]);
-    }
-  };
-
-  const handleSelectDestination = async () => {
-    try {
-      const selected = await open({
-        directory: true,
-        multiple: false,
-        title: "Выберите целевую папку",
-      });
-      if (selected) {
-        onDestinationChange(selected as string);
-      }
-    } catch (error) {
-      console.error("Ошибка выбора целевой папки:", error);
-      onStatusUpdate(["Ошибка выбора целевой папки"]);
-    }
-  };
+  const { selectDirectory } = useSelectDirectory(onStatusUpdate);
 
   return (
     <div className={styles.addTaskSection}>
@@ -87,7 +58,12 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           className={styles.input}
           readOnly
         />
-        <button onClick={handleSelectSource} className={styles.button}>
+        <button
+          onClick={() =>
+            selectDirectory("Выберите исходную папку", onSourceChange)
+          }
+          className={styles.button}
+        >
           Выбрать
         </button>
       </div>
@@ -101,7 +77,12 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           className={styles.input}
           readOnly
         />
-        <button onClick={handleSelectDestination} className={styles.button}>
+        <button
+          onClick={() =>
+            selectDirectory("Выберите целевую папку", onDestinationChange)
+          }
+          className={styles.button}
+        >
           Выбрать
         </button>
       </div>
