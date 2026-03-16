@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./TaskListPanel.module.css";
 import { HiRocketLaunch } from "react-icons/hi2";
 import { MdDeleteForever } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import "../../App.css";
 
 interface BackupTask {
@@ -26,6 +27,7 @@ interface TaskListPanelProps {
  *
  * @returns {JSX.Element}
  */
+
 const TaskListPanel: React.FC<TaskListPanelProps> = ({
   tasks,
   onDeleteTask,
@@ -85,11 +87,16 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
                 >
                   Запустить
                 </button>
+
                 <button
                   onClick={() => onDeleteTask(index)}
                   className={styles.deleteButton}
                 >
                   Удалить
+                </button>
+
+                <button className={styles.editButton}>
+                  <FaEdit className="reactIcon" />
                 </button>
               </div>
             </li>
