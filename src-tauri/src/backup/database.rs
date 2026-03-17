@@ -11,25 +11,24 @@ pub struct BackupTask {
     pub destination: String,
 }
 
-// Получение пути к tasks.db
 pub fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
     let config_dir = app_handle.path().app_config_dir().map_err(|e| {
         println!("Ошибка получения папки конфигурации: {:?}", e);
         format!("Не удалось получить папку конфигурации: {}", e)
     })?;
     let db_path = config_dir.join("tasks.db");
-    println!("Путь к tasks.db: {:?}", db_path);
+    // println!("Путь к tasks.db: {:?}", db_path);
     if let Some(parent) = db_path.parent() {
-        println!("Попытка создать папку: {:?}", parent);
+        // println!("Попытка создать папку: {:?}", parent);
         fs::create_dir_all(parent).map_err(|e| {
             println!("Ошибка создания папки {}: {:?}", parent.display(), e);
             format!("Не удалось создать папку {}: {}", parent.display(), e)
         })?;
         if parent.exists() {
-            println!(
-                "Папка {} успешно создана или уже существует",
-                parent.display()
-            );
+            // println!(
+            //     "Папка {} успешно создана или уже существует",
+            //     parent.display()
+            // );
         } else {
             println!("Папка {} НЕ создалась!", parent.display());
             return Err(format!("Папка {} не была создана", parent.display()));
@@ -64,9 +63,8 @@ fn check_duplicate_task(conn: &Connection, task: &BackupTask) -> Result<(), Stri
     Ok(())
 }
 
-// Инициализация таблицы задач
 fn init_db(conn: &Connection) -> Result<(), String> {
-    println!("Инициализация таблицы задач");
+    // println!("Инициализация таблицы задач");
     conn.execute(
         "CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -80,7 +78,7 @@ fn init_db(conn: &Connection) -> Result<(), String> {
         println!("Ошибка создания таблицы: {:?}", e);
         format!("Ошибка создания таблицы: {}", e)
     })?;
-    println!("Таблица задач создана или уже существует");
+    // println!("Таблица задач создана или уже существует");
     Ok(())
 }
 
@@ -94,16 +92,15 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
         format!("Ошибка открытия базы данных {}: {}", db_path.display(), e)
     })?;
 
-    init_db(&conn)?;
+    conn.execute_batch("PRAGMA busy_timeout = 10000;")
+        .map_err(|e| format!("Ошибка установки busy_timeout: {}", e))?;
 
-    // Очищаем таблицу перед сохранением нового списка
+    init_db(&conn)?;
     conn.execute("DELETE FROM tasks", []).map_err(|e| {
         println!("Ошибка очистки таблицы: {:?}", e);
         format!("Ошибка очистки таблицы: {}", e)
     })?;
-
     for task in &tasks {
-        // Проверка дубликатов перед вставкой
         check_duplicate_task(&conn, task)?;
         conn.execute(
             "INSERT INTO tasks (name, source, destination) VALUES (?1, ?2, ?3)",
@@ -121,7 +118,7 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
 #[tauri::command]
 pub fn load_tasks(app_handle: tauri::AppHandle) -> Result<Vec<BackupTask>, String> {
     let db_path = get_db_path(&app_handle)?;
-    println!("Загрузка задач из: {:?}", db_path);
+    // println!("Загрузка задач из: {:?}", db_path);
     let conn = Connection::open(&db_path).map_err(|e| {
         println!("Ошибка открытия базы данных {}: {:?}", db_path.display(), e);
         format!("Ошибка открытия базы данных {}: {}", db_path.display(), e)
@@ -154,6 +151,6 @@ pub fn load_tasks(app_handle: tauri::AppHandle) -> Result<Vec<BackupTask>, Strin
             format!("Ошибка обработки результата: {}", e)
         })?;
 
-    println!("Загруженные задачи: {:?}", tasks);
+    // println!("Загруженные задачи: {:?}", tasks);
     Ok(tasks)
 }

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import styles from "./TaskListPanel.module.css";
+import { invoke } from "@tauri-apps/api/core";
 import { BackupTask } from "../../hooks/useBackupTasks";
+import styles from "./TaskListPanel.module.css";
+
 import EditModal from "../modals/EditModal/EditModal";
 
 import { HiRocketLaunch } from "react-icons/hi2";
@@ -10,6 +12,7 @@ import "../../App.css";
 
 interface TaskListPanelProps {
   tasks: BackupTask[];
+  setTasks: (tasks: BackupTask[]) => void;
   onDeleteTask: (index: number) => void;
   onDeleteAllTasks: () => void;
   onStartBackups: () => void;
@@ -20,6 +23,7 @@ interface TaskListPanelProps {
 /**
  * Компонент для управления существующими задачами.
  * Можно удалить как отдельно взятую задачу, так и все разом.
+ * Позволяет редактировать задачу.
  * Также запускает процесс бэкапа всех задач или отдельной задачи.
  *
  * @returns {JSX.Element}
@@ -27,6 +31,7 @@ interface TaskListPanelProps {
 
 const TaskListPanel: React.FC<TaskListPanelProps> = ({
   tasks,
+  setTasks,
   onDeleteTask,
   onDeleteAllTasks,
   onStartBackups,
@@ -41,10 +46,22 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
     setIsEditOpen(true);
   };
 
-  const handleSaveEdit = (updatedTask: BackupTask) => {
+  const handleSaveEdit = async (updatedTask: BackupTask) => {
     if (editingIndex === null) return;
 
-    tasks[editingIndex] = updatedTask;
+    try {
+      const updatedTasks = tasks.map((t, i) =>
+        i === editingIndex ? updatedTask : t,
+      );
+
+      await invoke("save_tasks", { tasks: updatedTasks });
+
+      const reloadedTasks: BackupTask[] = await invoke("load_tasks");
+      setTasks(reloadedTasks);
+      console.log("Задача переименована");
+    } catch (error) {
+      console.error("Ошибка синхронизации:", error);
+    }
 
     setIsEditOpen(false);
     setEditingIndex(null);

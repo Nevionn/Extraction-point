@@ -23,6 +23,7 @@ import { FaInfoCircle } from "react-icons/fa";
 const MainPage: React.FC = () => {
   const {
     tasks,
+    setTasks,
     name,
     source,
     destination,
@@ -97,6 +98,7 @@ const MainPage: React.FC = () => {
           />
           <TaskListPanel
             tasks={tasks}
+            setTasks={setTasks}
             onDeleteTask={handleDeleteTaskWithProgress}
             onDeleteAllTasks={handleDeleteAllTasksWithProgress}
             onStartBackups={handleStartBackups}

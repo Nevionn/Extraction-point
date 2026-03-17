@@ -8,7 +8,7 @@ export interface BackupTask {
 }
 
 /**
- * Хук для управления задачами (загрузка, сохранение, добавление, удаление)
+ * Хук для управления задачами для компонента AddTaskPanel и MainPage (загрузка, сохранение, добавление, удаление)
  * с гарантированной синхронизацией с базой.
  */
 
@@ -36,7 +36,7 @@ export const useBackupTasks = () => {
     loadTasks();
   }, []);
 
-  // Универсальная синхронизация с БД
+  // Синхронизация с БД
   const syncTasks = async (tasksToSave?: BackupTask[]) => {
     try {
       if (tasksToSave) {
@@ -83,6 +83,7 @@ export const useBackupTasks = () => {
 
   return {
     tasks,
+    setTasks,
     name,
     source,
     destination,
