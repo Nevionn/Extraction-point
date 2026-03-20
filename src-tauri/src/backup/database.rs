@@ -9,6 +9,9 @@ pub struct BackupTask {
     pub name: String,
     pub source: String,
     pub destination: String,
+
+    #[serde(rename = "sortOrder")]
+    pub sort_order: i32,
 }
 
 pub fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
@@ -70,7 +73,8 @@ fn init_db(conn: &Connection) -> Result<(), String> {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             source TEXT NOT NULL,
-            destination TEXT NOT NULL
+            destination TEXT NOT NULL,
+            sortOrder INTEGER NOT NULL
         )",
         [],
     )
@@ -103,8 +107,8 @@ pub fn save_tasks(tasks: Vec<BackupTask>, app_handle: tauri::AppHandle) -> Resul
     for task in &tasks {
         check_duplicate_task(&conn, task)?;
         conn.execute(
-            "INSERT INTO tasks (name, source, destination) VALUES (?1, ?2, ?3)",
-            params![task.name, task.source, task.destination],
+            "INSERT INTO tasks (name, source, destination, sortOrder) VALUES (?1, ?2, ?3, ?4)",
+            params![task.name, task.source, task.destination, task.sort_order],
         )
         .map_err(|e| {
             println!("Ошибка вставки задачи '{}': {:?}", task.name, e);
@@ -127,7 +131,7 @@ pub fn load_tasks(app_handle: tauri::AppHandle) -> Result<Vec<BackupTask>, Strin
     init_db(&conn)?;
 
     let mut stmt = conn
-        .prepare("SELECT name, source, destination FROM tasks")
+        .prepare("SELECT name, source, destination, sortOrder FROM tasks ORDER BY sortOrder ASC")
         .map_err(|e| {
             println!("Ошибка подготовки запроса: {:?}", e);
             format!("Ошибка подготовки запроса: {}", e)
@@ -139,6 +143,7 @@ pub fn load_tasks(app_handle: tauri::AppHandle) -> Result<Vec<BackupTask>, Strin
                 name: row.get(0)?,
                 source: row.get(1)?,
                 destination: row.get(2)?,
+                sort_order: row.get(3)?
             })
         })
         .map_err(|e| {

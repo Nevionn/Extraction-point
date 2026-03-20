@@ -29,10 +29,8 @@ export const useBackupTasks = () => {
     try {
       const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
 
-      const sortedTasks = loadedTasks.sort((a, b) => a.sortOrder - b.sortOrder);
-
-      setTasks(sortedTasks);
-      return sortedTasks;
+      setTasks(loadedTasks);
+      return loadedTasks;
     } catch (error) {
       console.error("Не удалось загрузить задачи:", error);
       setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
