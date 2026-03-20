@@ -33,6 +33,7 @@ const MainPage: React.FC = () => {
     handleAddTask,
     handleDeleteTask,
     handleDeleteAllTasks,
+    handleUpdateTask,
     status,
     setStatus,
   } = useBackupTasks();
@@ -103,6 +104,7 @@ const MainPage: React.FC = () => {
             onDeleteAllTasks={handleDeleteAllTasksWithProgress}
             onStartBackups={handleStartBackups}
             onStartSingleBackup={handleStartSingleBackup}
+            onUpdateTask={handleUpdateTask}
             isBackingUp={isBackingUp}
           />
         </div>

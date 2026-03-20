@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import { BackupTask } from "../../hooks/useBackupTasks";
 import styles from "./TaskListPanel.module.css";
 
@@ -17,6 +16,7 @@ interface TaskListPanelProps {
   onDeleteAllTasks: () => void;
   onStartBackups: () => void;
   onStartSingleBackup: (index: number) => void;
+  onUpdateTask: (index: number, task: BackupTask) => void;
   isBackingUp: boolean;
 }
 
@@ -31,11 +31,11 @@ interface TaskListPanelProps {
 
 const TaskListPanel: React.FC<TaskListPanelProps> = ({
   tasks,
-  setTasks,
   onDeleteTask,
   onDeleteAllTasks,
   onStartBackups,
   onStartSingleBackup,
+  onUpdateTask,
   isBackingUp,
 }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -49,19 +49,7 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
   const handleSaveEdit = async (updatedTask: BackupTask) => {
     if (editingIndex === null) return;
 
-    try {
-      const updatedTasks = tasks.map((t, i) =>
-        i === editingIndex ? updatedTask : t,
-      );
-
-      await invoke("save_tasks", { tasks: updatedTasks });
-
-      const reloadedTasks: BackupTask[] = await invoke("load_tasks");
-      setTasks(reloadedTasks);
-      console.log("Задача переименована");
-    } catch (error) {
-      console.error("Ошибка синхронизации:", error);
-    }
+    await onUpdateTask(editingIndex, updatedTask);
 
     setIsEditOpen(false);
     setEditingIndex(null);

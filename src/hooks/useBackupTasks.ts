@@ -8,8 +8,8 @@ export interface BackupTask {
 }
 
 /**
- * Хук для управления задачами для компонента AddTaskPanel и MainPage (загрузка, сохранение, добавление, удаление)
- * с гарантированной синхронизацией с базой.
+ * Хук для управления задачами для компонента (загрузка, сохранение, добавление, редактирование, удаление)
+ * с синхронизацией с базой.
  */
 
 export const useBackupTasks = () => {
@@ -22,21 +22,22 @@ export const useBackupTasks = () => {
   const [status, setStatus] = useState<string[]>([]);
 
   // Загрузка задач при инициализации
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
-        setTasks(loadedTasks);
-      } catch (error) {
-        console.error("Не удалось загрузить задачи:", error);
-        setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
-      }
-    };
+  const loadTasks = async () => {
+    try {
+      const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
+      setTasks(loadedTasks);
+      return loadedTasks;
+    } catch (error) {
+      console.error("Не удалось загрузить задачи:", error);
+      setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
+      return [];
+    }
+  };
 
+  useEffect(() => {
     loadTasks();
   }, []);
 
-  // Синхронизация с БД
   const syncTasks = async (tasksToSave?: BackupTask[]) => {
     try {
       if (tasksToSave) {
@@ -69,6 +70,12 @@ export const useBackupTasks = () => {
     setDestination("");
   };
 
+  const handleUpdateTask = async (index: number, updatedTask: BackupTask) => {
+    const updatedTasks = tasks.map((t, i) => (i === index ? updatedTask : t));
+
+    await syncTasks(updatedTasks);
+  };
+
   const handleDeleteTask = async (index: number) => {
     const taskName = tasks[index].name;
     const updatedTasks = tasks.filter((_, i) => i !== index);
@@ -91,6 +98,7 @@ export const useBackupTasks = () => {
     setSource,
     setDestination,
     handleAddTask,
+    handleUpdateTask,
     handleDeleteTask,
     handleDeleteAllTasks,
     status,
