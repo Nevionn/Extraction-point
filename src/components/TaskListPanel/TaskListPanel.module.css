@@ -63,7 +63,6 @@
   align-items: flex-start;
   padding: 10px;
   border-bottom: 1px solid #eee;
-  gap: 10px;
 }
 
 .taskItem:last-child {
@@ -96,6 +95,21 @@
 .taskButtons {
   display: flex;
   gap: 10px;
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: grab;
+  transition: opacity 0.2s;
+}
+
+.dragHandle:hover {
+  color: #b486f1;
 }
 
 .deleteButton {

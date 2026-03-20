@@ -6,6 +6,7 @@ import EditModal from "../modals/EditModal/EditModal";
 
 import { HiRocketLaunch } from "react-icons/hi2";
 import { MdDeleteForever } from "react-icons/md";
+import { RiDragDropLine } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import "../../App.css";
 
@@ -93,6 +94,10 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
           <ul className={styles.taskList}>
             {tasks.map((task, index) => (
               <li key={index} className={styles.taskItem}>
+                <button className={styles.dragHandle}>
+                  <RiDragDropLine className="reactIcon" />
+                </button>
+
                 <div className={styles.taskDetails}>
                   <span>
                     Название:{" "}
