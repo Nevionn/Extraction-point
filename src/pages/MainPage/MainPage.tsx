@@ -34,6 +34,7 @@ const MainPage: React.FC = () => {
     handleDeleteTask,
     handleDeleteAllTasks,
     handleUpdateTask,
+    handleReorderTasks,
     status,
     setStatus,
   } = useBackupTasks();
@@ -51,7 +52,7 @@ const MainPage: React.FC = () => {
 
   const handleDeleteTaskWithProgress = async (index: number) => {
     const taskName = tasks[index].name; // Берем имя до удаления
-    await handleDeleteTask(index); // Ждем завершения синхронизации
+    await handleDeleteTask(index);
     setProgress((prev) => {
       const newProgress = new Map(prev);
       newProgress.delete(taskName);
@@ -105,6 +106,9 @@ const MainPage: React.FC = () => {
             onStartBackups={handleStartBackups}
             onStartSingleBackup={handleStartSingleBackup}
             onUpdateTask={handleUpdateTask}
+            onUpdateAfterReorder={async (reorderTasks) => {
+              await handleReorderTasks(reorderTasks);
+            }}
             isBackingUp={isBackingUp}
           />
         </div>

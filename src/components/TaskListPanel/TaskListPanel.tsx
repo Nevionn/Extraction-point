@@ -8,6 +8,17 @@ import { HiRocketLaunch } from "react-icons/hi2";
 import { MdDeleteForever } from "react-icons/md";
 import { RiDragDropLine } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
+
+import { DndContext, closestCenter } from "@dnd-kit/core";
+
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+  arrayMove,
+} from "@dnd-kit/sortable";
+
+import { CSS } from "@dnd-kit/utilities";
 import "../../App.css";
 
 interface TaskListPanelProps {
@@ -18,11 +29,13 @@ interface TaskListPanelProps {
   onStartBackups: () => void;
   onStartSingleBackup: (index: number) => void;
   onUpdateTask: (index: number, task: BackupTask) => void;
+  onUpdateAfterReorder: (tasks: BackupTask[]) => Promise<void>;
   isBackingUp: boolean;
 }
 
 /**
  * Компонент для управления существующими задачами.
+ * Поддержка DND сортировки.
  * Можно удалить как отдельно взятую задачу, так и все разом.
  * Позволяет редактировать задачу.
  * Также запускает процесс бэкапа всех задач или отдельной задачи.
@@ -37,6 +50,7 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
   onStartBackups,
   onStartSingleBackup,
   onUpdateTask,
+  onUpdateAfterReorder,
   isBackingUp,
 }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -64,6 +78,53 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
     setEditingIndex(null);
   };
 
+  // DnD: обработчик окончания перетаскивания
+  const handleDragEnd = async (event: any) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = tasks.findIndex((t) => t.name === active.id);
+    const newIndex = tasks.findIndex((t) => t.name === over.id);
+
+    const reordered = arrayMove(tasks, oldIndex, newIndex).map(
+      (task, index) => ({
+        ...task,
+        sortOrder: index,
+      }),
+    );
+
+    // обновляем локально
+    reordered && reordered.length && reordered.length > 0 && reordered;
+
+    await onUpdateAfterReorder(reordered);
+  };
+
+  /** Компонент для одного элемента списка с DnD */
+
+  const SortableItem = ({
+    task,
+    children,
+  }: {
+    task: BackupTask;
+    index: number;
+    children: (props: any) => React.ReactNode;
+  }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } =
+      useSortable({ id: task.name });
+
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    };
+
+    return (
+      <li ref={setNodeRef} style={style}>
+        {children({ attributes, listeners })}
+      </li>
+    );
+  };
+
   return (
     <>
       <div className={styles.tasksSection}>
@@ -88,59 +149,83 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
             </div>
           )}
         </div>
+
         {tasks.length === 0 ? (
           <p className={styles.noTask}>Нет задач. Добавьте новую.</p>
         ) : (
-          <ul className={styles.taskList}>
-            {tasks.map((task, index) => (
-              <li key={index} className={styles.taskItem}>
-                <button className={styles.dragHandle}>
-                  <RiDragDropLine className="reactIcon" />
-                </button>
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={tasks.map((t) => t.name)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ul className={styles.taskList}>
+                {tasks.map((task, index) => (
+                  <SortableItem key={task.name} task={task} index={index}>
+                    {({ attributes, listeners }) => (
+                      <div className={styles.taskItem}>
+                        <button
+                          className={styles.dragHandle}
+                          {...attributes}
+                          {...listeners}
+                        >
+                          <RiDragDropLine className="reactIcon" />
+                        </button>
 
-                <div className={styles.taskDetails}>
-                  <span>
-                    Название:{" "}
-                    <span className={styles.taskName}>{task.name}</span>
-                  </span>
-                  <span>
-                    Источник:{" "}
-                    <span className={styles.taskPath}>{task.source}</span>
-                  </span>
-                  <span>
-                    Цель:{" "}
-                    <span className={styles.taskPath}>{task.destination}</span>
-                  </span>
-                </div>
+                        <div className={styles.taskDetails}>
+                          <span>
+                            Название:{" "}
+                            <span className={styles.taskName}>{task.name}</span>
+                          </span>
+                          <span>
+                            Источник:{" "}
+                            <span className={styles.taskPath}>
+                              {task.source}
+                            </span>
+                          </span>
+                          <span>
+                            Цель:{" "}
+                            <span className={styles.taskPath}>
+                              {task.destination}
+                            </span>
+                          </span>
+                        </div>
 
-                <div className={styles.taskButtons}>
-                  <button
-                    onClick={() => onStartSingleBackup(index)}
-                    className={styles.startSingleButton}
-                    disabled={isBackingUp}
-                  >
-                    Запустить
-                  </button>
+                        <div className={styles.taskButtons}>
+                          <button
+                            className={styles.startSingleButton}
+                            onClick={() => onStartSingleBackup(index)}
+                            disabled={isBackingUp}
+                          >
+                            Запустить
+                          </button>
 
-                  <button
-                    onClick={() => onDeleteTask(index)}
-                    className={styles.deleteButton}
-                  >
-                    Удалить
-                  </button>
+                          <button
+                            className={styles.deleteButton}
+                            onClick={() => onDeleteTask(index)}
+                          >
+                            Удалить
+                          </button>
 
-                  <button
-                    className={styles.editButton}
-                    onClick={() => handleEditOpen(index)}
-                  >
-                    <FaEdit className="reactIcon" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                          <button
+                            className={styles.editButton}
+                            onClick={() => handleEditOpen(index)}
+                          >
+                            <FaEdit className="reactIcon" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </SortableItem>
+                ))}
+              </ul>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
+
       {editingIndex !== null && (
         <EditModal
           task={tasks[editingIndex]}

@@ -86,10 +86,16 @@ export const useBackupTasks = () => {
     setDestination("");
   };
 
+  /** Редактирования в  EditModal */
   const handleUpdateTask = async (index: number, updatedTask: BackupTask) => {
     const updatedTasks = tasks.map((t, i) => (i === index ? updatedTask : t));
 
     await syncTasks(updatedTasks);
+  };
+
+  /** DND сортировка */
+  const handleReorderTasks = async (reorderTasks: BackupTask[]) => {
+    await syncTasks(reorderTasks);
   };
 
   const handleDeleteTask = async (index: number) => {
@@ -123,6 +129,7 @@ export const useBackupTasks = () => {
     setDestination,
     handleAddTask,
     handleUpdateTask,
+    handleReorderTasks,
     handleDeleteTask,
     handleDeleteAllTasks,
     status,
