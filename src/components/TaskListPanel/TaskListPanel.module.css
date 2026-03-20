@@ -5,7 +5,7 @@
   background-color: #353535;
   border: 2px solid #4d4d4d;
   color: #f3f0f0;
-  padding: 20px;
+  padding: 20px 20px 20px 28px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: "WDXL Lubrifont TC";
@@ -55,14 +55,16 @@
 .taskList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .taskItem {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 20px 0;
   border-bottom: 1px solid #eee;
+  gap: 12px;
 }
 
 .taskItem:last-child {
@@ -100,12 +102,14 @@
 .dragHandle {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  justify-content: center;
   background: none;
   border: none;
   color: #aaa;
   cursor: grab;
-  transition: opacity 0.2s;
+  font-size: 1.8rem;
+  padding: 0 8px 0 0; /* отступ справа от иконки */
+  margin-left: -6px; /* компенсируем padding секции*/
 }
 
 .dragHandle:hover {
