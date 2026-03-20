@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BackupTask } from "../../hooks/useBackupTasks";
+import { BackupTask, BackupTaskForm } from "../../hooks/useBackupTasks";
 import styles from "./TaskListPanel.module.css";
 
 import EditModal from "../modals/EditModal/EditModal";
@@ -43,13 +43,21 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
 
   const handleEditOpen = (index: number) => {
     setEditingIndex(index);
+    onUpdateTask;
     setIsEditOpen(true);
   };
 
-  const handleSaveEdit = async (updatedTask: BackupTask) => {
+  const handleSaveEdit = async (updatedTask: BackupTaskForm) => {
     if (editingIndex === null) return;
 
-    await onUpdateTask(editingIndex, updatedTask);
+    const originalTask = tasks[editingIndex];
+
+    const fullTask: BackupTask = {
+      ...updatedTask,
+      sortOrder: originalTask.sortOrder,
+    };
+
+    await onUpdateTask(editingIndex, fullTask);
 
     setIsEditOpen(false);
     setEditingIndex(null);

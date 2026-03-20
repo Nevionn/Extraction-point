@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./EditModal.module.css";
-import { BackupTask } from "../../../hooks/useBackupTasks";
+import { BackupTaskForm } from "../../../hooks/useBackupTasks";
 import { useSelectDirectory } from "../../../hooks/useSelectDirectory";
 
 interface EditModalProps {
-  task: BackupTask;
+  task: BackupTaskForm;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (updatedTask: BackupTask) => void;
+  onSave: (updatedTask: BackupTaskForm) => void;
 }
 
 /**
@@ -24,7 +24,7 @@ const EditModal: React.FC<EditModalProps> = ({
 }) => {
   const { selectDirectory } = useSelectDirectory();
 
-  const [form, setForm] = useState<BackupTask>({
+  const [form, setForm] = useState<BackupTaskForm>({
     name: "",
     source: "",
     destination: "",

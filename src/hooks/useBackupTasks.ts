@@ -5,7 +5,10 @@ export interface BackupTask {
   name: string;
   source: string;
   destination: string;
+  sortOrder: number;
 }
+
+export type BackupTaskForm = Omit<BackupTask, "sortOrder">;
 
 /**
  * Хук для управления задачами для компонента (загрузка, сохранение, добавление, редактирование, удаление)
@@ -25,8 +28,11 @@ export const useBackupTasks = () => {
   const loadTasks = async () => {
     try {
       const loadedTasks: BackupTask[] = await invoke("load_tasks", {});
-      setTasks(loadedTasks);
-      return loadedTasks;
+
+      const sortedTasks = loadedTasks.sort((a, b) => a.sortOrder - b.sortOrder);
+
+      setTasks(sortedTasks);
+      return sortedTasks;
     } catch (error) {
       console.error("Не удалось загрузить задачи:", error);
       setStatus((prev) => [...prev, `Ошибка загрузки задач: ${error}`]);
@@ -60,11 +66,23 @@ export const useBackupTasks = () => {
       return;
     }
 
-    const newTask: BackupTask = { name, source, destination };
+    // вычисляем следующий sortOrder
+    const nextSortOrder =
+      tasks.length > 0 ? Math.max(...tasks.map((t) => t.sortOrder)) + 1 : 0;
+
+    const newTask: BackupTask = {
+      name,
+      source,
+      destination,
+      sortOrder: nextSortOrder,
+    };
+
     const updatedTasks = [...tasks, newTask];
+
     await syncTasks(updatedTasks);
 
     setStatus((prev) => [...prev, `Задача '${name}' успешно добавлена`]);
+
     setName("");
     setSource("");
     setDestination("");
@@ -78,8 +96,16 @@ export const useBackupTasks = () => {
 
   const handleDeleteTask = async (index: number) => {
     const taskName = tasks[index].name;
-    const updatedTasks = tasks.filter((_, i) => i !== index);
+
+    const updatedTasks = tasks
+      .filter((_, i) => i !== index)
+      .map((task, i) => ({
+        ...task,
+        sortOrder: i,
+      }));
+
     await syncTasks(updatedTasks);
+
     setStatus((prev) => [...prev, `Задача '${taskName}' удалена`]);
   };
 
