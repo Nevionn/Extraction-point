@@ -2,8 +2,8 @@
   height: 254px;
   width: 100%;
   max-width: 600px;
-  background-color: #353535;
-  border: 2px solid #4d4d4d;
+  background-color: var(--bg-color-panel);
+  border: 2px solid var(--border-color-panel);
   color: #f3f0f0;
   padding: 20px 20px 20px 28px;
   border-radius: 8px;
@@ -11,7 +11,7 @@
   font-family: "WDXL Lubrifont TC";
   font-size: large;
   scrollbar-width: thin;
-  scrollbar-color: #a8a3ae #272727;
+  scrollbar-color: var(--color-scroll-bar);
   overflow-y: auto;
 }
 
@@ -67,9 +67,15 @@
   gap: 12px;
 }
 
-.taskItem:last-child {
-  border-bottom: none;
-}
+/* .taskItem:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 40px;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+} */
 
 .taskDetails {
   display: flex;
@@ -118,7 +124,7 @@
 
 .deleteButton {
   padding: 6px 12px;
-  background-color: #3d3d3d;
+  background-color: transparent;
   border: 1px solid #dc3545;
   color: #f65060;
   border-radius: 6px;
@@ -137,7 +143,7 @@
   justify-content: center;
   align-items: center;
   padding: 6px 12px;
-  background-color: #3d3d3d;
+  background-color: transparent;
   border: 1px solid #dc3545;
   color: #f65060;
   border-radius: 6px;
@@ -157,7 +163,7 @@
   align-items: center;
   padding: 6px 12px;
   border: 1px solid #b486f1;
-  background-color: #3d3d3d;
+  background-color: transparent;
   color: #b486f1;
   border-radius: 6px;
   cursor: pointer;
@@ -177,7 +183,7 @@
 
 .startSingleButton {
   padding: 6px 12px;
-  background-color: #3d3d3d;
+  background-color: transparent;
   border: 1px solid #28a745;
   color: #3bcb5c;
   border-radius: 6px;
@@ -201,7 +207,7 @@
   justify-content: center;
   align-items: center;
   padding: 6px 10px;
-  background-color: #3d3d3d;
+  background-color: transparent;
   border: 1px solid #ffc107;
   color: #ffc107;
   border-radius: 6px;

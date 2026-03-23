@@ -165,7 +165,15 @@ const TaskListPanel: React.FC<TaskListPanelProps> = ({
                 {tasks.map((task, index) => (
                   <SortableItem key={task.name} task={task} index={index}>
                     {({ attributes, listeners }) => (
-                      <div className={styles.taskItem}>
+                      <div
+                        className={styles.taskItem}
+                        style={{
+                          borderBottom:
+                            index === tasks.length - 1
+                              ? "none"
+                              : "1px solid #eee",
+                        }}
+                      >
                         <button
                           className={styles.dragHandle}
                           {...attributes}

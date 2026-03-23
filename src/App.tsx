@@ -1,11 +1,14 @@
 import "./App.css";
 import MainPage from "./pages/MainPage/MainPage";
+import { ThemeProvider } from "./hooks/useTheme";
 
 function App() {
   return (
-    <main className="container">
-      <MainPage />
-    </main>
+    <ThemeProvider>
+      <main className="container">
+        <MainPage />
+      </main>
+    </ThemeProvider>
   );
 }
 

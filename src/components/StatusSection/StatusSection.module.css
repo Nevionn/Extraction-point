@@ -2,8 +2,8 @@
   min-height: 254px;
   width: 100%;
   max-width: 600px;
-  background-color: #353535;
-  border: 2px solid #4d4d4d;
+  background-color: var(--bg-color-panel);
+  border: 2px solid var(--border-color-panel);
   color: #f3f0f0;
   padding: 20px;
   border-radius: 8px;
@@ -20,7 +20,7 @@
   padding: 0;
   border-radius: 8px;
   padding: 12px 10px;
-  background-color: #272727;
+  background-color: var(--bg-color-panel-status-list);
   font-family: "WDXL Lubrifont TC";
   font-size: large;
   height: 140px;

@@ -2,8 +2,8 @@
   height: 254px;
   width: 100%;
   max-width: 600px;
-  background-color: #353535;
-  border: 2px solid #4d4d4d;
+  background-color: var(--bg-color-panel);
+  border: 2px solid var(--border-color-panel);
   color: #f3f0f0;
   padding: 20px;
   border-radius: 8px;
@@ -33,15 +33,20 @@
   color: #f3f0f0;
 }
 
-.input {
+.field {
   flex: 1;
   padding: 8px;
   color: #4da6ff;
-  border: 2px solid #4d4d4d;
-  background-color: #3d3d3d;
+  border: 2px solid var(--border-color-input);
+  background-color: var(--color-input);
   border-radius: 4px;
   font-family: "WDXL Lubrifont TC";
   font-size: medium;
+}
+
+.field:focus {
+  border-color: var(--focus-color-input);
+  outline: none;
 }
 
 .button {

@@ -45,7 +45,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           value={name}
           onChange={(e) => onNameChange(e.target.value)}
           placeholder="Введите название задачи"
-          className={styles.input}
+          className={styles.field}
         />
       </div>
       <div className={styles.inputGroup}>
@@ -55,7 +55,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           value={source}
           onChange={(e) => onSourceChange(e.target.value)}
           placeholder="Выберите исходную папку..."
-          className={styles.input}
+          className={styles.field}
           readOnly
         />
         <button
@@ -74,7 +74,7 @@ const AddTaskPanel: React.FC<AddTaskPanelProps> = ({
           value={destination}
           onChange={(e) => onDestinationChange(e.target.value)}
           placeholder="Выберите целевую папку..."
-          className={styles.input}
+          className={styles.field}
           readOnly
         />
         <button

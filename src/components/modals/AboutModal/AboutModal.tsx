@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { IoClose, IoCopyOutline } from "react-icons/io5";
+import { IoCopyOutline } from "react-icons/io5";
+
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { invoke } from "@tauri-apps/api/core";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
+
 import appIcon from "../../../assets/app-icon.webp";
 import styles from "./AboutModal.module.css";
+
+import HeaderModal from "../HeaderModal/HeaderModal";
 
 interface GitHubRelease {
   tag_name: string;
@@ -102,10 +106,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeIcon} onClick={onClose}>
-          <IoClose size={24} />
-        </button>
-        <h2 className={styles.title}>О программе</h2>
+        <HeaderModal title="О программе" onClose={onClose} />
         <div className={styles.content}>
           <p className={styles.nameProgramm}>
             <strong>Extraction Point</strong>

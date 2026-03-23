@@ -3,6 +3,8 @@ import styles from "./EditModal.module.css";
 import { BackupTaskForm } from "../../../hooks/useBackupTasks";
 import { useSelectDirectory } from "../../../hooks/useSelectDirectory";
 
+import HeaderModal from "../HeaderModal/HeaderModal";
+
 interface EditModalProps {
   task: BackupTaskForm;
   isOpen: boolean;
@@ -62,12 +64,7 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.header}>
-          <h2>Редактирование задачи</h2>
-          <button className={styles.closeBtn} onClick={onClose} title="Закрыть">
-            ×
-          </button>
-        </div>
+        <HeaderModal title="Редактирование задачи" onClose={onClose} />
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>

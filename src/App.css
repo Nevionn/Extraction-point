@@ -22,3 +22,39 @@ body {
 .reactIcon {
   margin-left: 3px;
 }
+
+[data-theme="ametist"] {
+  --bg-color: #141422;
+
+  --bg-color-modal: #1a1a2e;
+  --color-header-modal: #28283c;
+  --color-btn-modal: #2c2c42;
+
+  --bg-color-panel: #1a1a2e;
+  --border-color-panel: #2e2e4a;
+  --bg-color-panel-status-list: #141422;
+
+  --color-input: #121221;
+  --border-color-input: #3a3a52;
+  --focus-color-input: #6363ff;
+
+  --color-scroll-bar: #5252b7 #2e2e4a;
+}
+
+[data-theme="onyx"] {
+  --bg-color: #272727;
+
+  --bg-color-modal: #272727;
+  --color-header-modal: #1f1f1f;
+  --color-btn-modal: #6f6c6c;
+
+  --bg-color-panel: #353535;
+  --border-color-panel: #4d4d4d;
+  --bg-color-panel-status-list: #272727;
+
+  --color-input: #3d3d3d;
+  --border-color-input: #4d4d4d;
+  --focus-color-input: #d7d1d1;
+
+  --color-scroll-bar: #a8a3ae #272727;
+}
