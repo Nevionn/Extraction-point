@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { BackupTask, BackupTaskForm } from "../../hooks/useBackupTasks";
+import { BackupTask, BackupTaskForm } from "../../../hooks/useBackupTasks";
 import styles from "./TaskListPanel.module.css";
 
-import EditModal from "../modals/EditModal/EditModal";
+import EditModal from "../../modals/EditModal/EditModal";
 
 import { HiRocketLaunch } from "react-icons/hi2";
 import { MdDeleteForever } from "react-icons/md";
@@ -19,7 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
-import "../../App.css";
+import "../../../App.css";
 
 interface TaskListPanelProps {
   tasks: BackupTask[];

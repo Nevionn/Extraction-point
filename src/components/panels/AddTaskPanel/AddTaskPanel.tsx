@@ -1,6 +1,6 @@
 import React from "react";
 import { MdTask } from "react-icons/md";
-import { useSelectDirectory } from "../../hooks/useSelectDirectory";
+import { useSelectDirectory } from "../../../hooks/useSelectDirectory";
 import styles from "./AddTaskPanel.module.css";
 
 interface AddTaskPanelProps {
