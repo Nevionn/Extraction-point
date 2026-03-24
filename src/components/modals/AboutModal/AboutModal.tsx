@@ -27,7 +27,7 @@ interface AboutModalProps {
 
 const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [dbPath, setDbPath] = useState("Загрузка пути...");
-  const [currentVersion] = useState("1.1.2");
+  const [currentVersion] = useState("2.1.2");
 
   const [latestRelease, setLatestRelease] = useState<string | null>(null);
   const [loadingUpdate, setLoadingUpdate] = useState(true);
