@@ -13,6 +13,7 @@
         { "url": "https://api.github.com/*" },
         { "url": "https://github.com/*" }
       ]
-    }
+    },
+    "clipboard-manager:allow-write-text"
   ]
 }
