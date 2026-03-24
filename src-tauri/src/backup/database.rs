@@ -19,7 +19,7 @@ pub fn get_db_path(app_handle: &tauri::AppHandle) -> Result<PathBuf, String> {
         println!("Ошибка получения папки конфигурации: {:?}", e);
         format!("Не удалось получить папку конфигурации: {}", e)
     })?;
-    let db_path = config_dir.join("tasks.db");
+    let db_path = config_dir.join("ep.db");
     // println!("Путь к tasks.db: {:?}", db_path);
     if let Some(parent) = db_path.parent() {
         // println!("Попытка создать папку: {:?}", parent);

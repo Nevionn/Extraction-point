@@ -35,7 +35,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [pathColor, setPathColor] = useState("#f3f0f0");
 
   const BASE_PATH =
-    "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\tasks.db";
+    "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\ep.db";
 
   const GITHUB_URL = "https://github.com/Nevionn/Extraction-point";
   const RELEASES_API_URL =
