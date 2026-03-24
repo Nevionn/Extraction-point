@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 type Theme = "ametist" | "onyx";
 
@@ -12,8 +19,28 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>("ametist");
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "ametist" ? "onyx" : "ametist"));
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await invoke<{ theme: Theme }>("get_settings");
+        if (result.theme) {
+          setTheme(result.theme);
+        }
+      } catch (err) {
+        console.error("Не удалось получить тему из Rust:", err);
+      }
+    })();
+  }, []);
+
+  const toggleTheme = async () => {
+    const newTheme = theme === "ametist" ? "onyx" : "ametist";
+    setTheme(newTheme);
+
+    try {
+      await invoke("update_theme", { theme: newTheme });
+    } catch (err) {
+      console.error("Не удалось сохранить тему в Rust:", err);
+    }
   };
 
   return (
