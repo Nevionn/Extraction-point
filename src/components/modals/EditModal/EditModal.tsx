@@ -128,7 +128,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 type="button"
                 onClick={() =>
                   selectDirectory("Выберите целевую папку", (value) =>
-                    setForm((prev) => ({ ...prev, source: value })),
+                    setForm((prev) => ({ ...prev, destination: value })),
                   )
                 }
                 className={styles.selectBtn}

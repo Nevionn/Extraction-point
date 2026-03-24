@@ -26,7 +26,7 @@
   height: 140px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #a8a3ae #272727;
+  scrollbar-color: var(--color-scroll-bar);
 }
 
 .statusList::-webkit-scrollbar {
