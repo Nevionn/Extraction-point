@@ -20,17 +20,25 @@ interface AboutModalProps {
   onClose: () => void;
 }
 
+/**
+ * Модальное окно о приложение
+ * Позволяет получить ссылку на актуальную версию, если версионность приложения отстает
+ */
+
 const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const [dbPath, setDbPath] = useState("Загрузка пути...");
   const [currentVersion] = useState("1.1.2");
+
   const [latestRelease, setLatestRelease] = useState<string | null>(null);
   const [loadingUpdate, setLoadingUpdate] = useState(true);
 
-  const BASE_PATH: string =
+  const [pathColor, setPathColor] = useState("#f3f0f0");
+
+  const BASE_PATH =
     "C:\\Users\\You\\AppData\\Roaming\\com.extraction.point\\tasks.db";
 
-  const GITHUB_URL: string = "https://github.com/Nevionn/Extraction-point";
-  const RELEASES_API_URL: string =
+  const GITHUB_URL = "https://github.com/Nevionn/Extraction-point";
+  const RELEASES_API_URL =
     "https://api.github.com/repos/Nevionn/Extraction-point/releases/latest";
 
   useEffect(() => {
@@ -58,8 +66,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         });
         if (response.ok) {
           const data: GitHubRelease = await response.json();
-          const latestTag = data.tag_name;
-          setLatestRelease(latestTag);
+          setLatestRelease(data.tag_name);
         }
       } catch (err) {
         console.error("Ошибка проверки обновлений:", err);
@@ -74,9 +81,13 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
     try {
       const folderPath = dbPath.substring(0, dbPath.lastIndexOf("\\"));
       await writeText(folderPath);
+      setPathColor("#4caf50");
+      setTimeout(() => setPathColor("#f3f0f0"), 2000);
       console.log("Путь скопирован в буфер обмена:", folderPath);
     } catch (err) {
       console.error("Ошибка копирования пути:", err);
+      setPathColor("#f44336");
+      setTimeout(() => setPathColor("#f3f0f0"), 2000);
     }
   };
 
@@ -121,17 +132,19 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
           <p>Путь к базе данных:</p>
           <div className={styles.pathItem}>
-            <p>{dbPath}</p>
+            <p style={{ color: pathColor }}>{dbPath}</p>
             <button className={styles.copyButton} onClick={handleCopyPath}>
               <IoCopyOutline size={20} />
             </button>
           </div>
+
           <p>
             Автор:{" "}
             <a className={styles.authorLink} onClick={handleOpenGitHub}>
               Nevionn
             </a>
           </p>
+
           <div className={styles.versionContainer}>
             <p>Версия: {currentVersion}</p>
             {hasUpdate && (
