@@ -7,19 +7,25 @@
 
 # Стек технологий
 
-<div align="center" style="display: flex; align-items: center;">
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tauri/tauri-original.svg" alt="Tauri Logo" width="100" height="100">
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" alt="Rust Logo" width="100" height="100" />
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="100" height="100" />
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="TS Logo" width="100" height="100">
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" alt="SQlite Logo" width="100" height="100">
-  <span style="margin: 0 10px; font-size: 24px;"> </span>
-</div>
+<table>
+<tr>
+<td>
+<img src="https://img.shields.io/badge/Tauri-24C8DB?style=for-the-badge&logo=tauri&logoColor=FFC131" />
+</td>
+<td>
+<img src="https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white" />
+</td>
+<td>
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+</td>
+<td>
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+</td>
+<td>
+<img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" />
+</td>
+</tr>
+</table>
 
 # Установка
 
